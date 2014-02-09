@@ -8,26 +8,53 @@ typedef struct {
 	int sets, reps, weight;
 } Exercise;
 
+typedef struct {
+	char letter;
+	Exercise *exercises;
+} Workout;
+
+int total_workouts = 0;
+
 Window *window;
 TextLayer *exercise_layer, *titles_layer, *numbers_layer;
 
-static void setWorkouts(int key) {
-	Exercise ex;
-	ex.name = "";
-	snprintf(ex.name, 10, "Teste #%02d", key);
-	ex.sets = key;
-	ex.reps = 10+key;
-	ex.weight = 30*key;
-	persist_write_data(key, &ex, sizeof(ex));
+static char itoc(int number) {
+	return number + 64;
 }
 
-static Exercise getWorkouts(int key) {
-	Exercise read_ex;
+static void setWorkouts(int i) {
+	Exercise exs[3] = {
+		{ .name = "Ex 1", .sets = 4, .reps = 10, .weight = 35 },
+		{ .name = "Ex 2", .sets = 4, .reps = 12, .weight = 8 },
+		{ .name = "Abdominal", .sets = 3, .reps = 20, .weight = 0 }
+	};
+	Workout workout = {
+		.letter = itoc(total_workouts++),
+		.exercises = exs
+	};
+
+	persist_write_data(i, &workout, sizeof(workout));
+
+	total_workouts = ++i;
+}
+
+static Exercise *getExercises() {
+	static Exercise exs[] = {
+		{ .name = "Ex 1", .sets = 4, .reps = 10, .weight = 35 },
+		{ .name = "Ex 2", .sets = 4, .reps = 12, .weight = 8 },
+		{ .name = "Abdominal", .sets = 3, .reps = 20, .weight = 0 }
+	};
+
+	return exs;
+}
+
+static Workout getWorkouts(int key) {
+	Workout read_data;
 
 	if (persist_exists(key))
-		persist_read_data(key, &read_ex, sizeof(read_ex));
+		persist_read_data(key, &read_data, sizeof(read_data));
 
-	return read_ex;
+	return read_data;
 }
 
 static void begin(void) {
@@ -46,16 +73,19 @@ static void begin(void) {
 	text_layer_set_font(numbers_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 	text_layer_set_text_alignment(numbers_layer, GTextAlignmentLeft);
 
-	// setWorkouts(1);
-	setWorkouts(2);
-	Exercise my_ex = getWorkouts(2);
+	setWorkouts(1);
+	Workout my_workout = getWorkouts(1);
+	Exercise my_ex = my_workout.exercises[1];
+	// Exercise *all = getExercises();
+	// Exercise my_ex = all[1];
 
-	char numbers[15];
+	char numbers[15], title[100];
 	// snprintf(numbers, 15, "%dx\n%d\n%dkg", 4, 10, 35);
 	// text_layer_set_text(exercise_layer, "Blabla Whiskas Sache");
 	// text_layer_set_text(titles_layer, "Sets:\nReps:\nWeight:");
-	snprintf(numbers, 15, "%dx\n%d\n%dkg", my_ex.sets, my_ex.reps, my_ex.weight);
-	text_layer_set_text(exercise_layer, my_ex.name);
+	snprintf(numbers, sizeof(numbers), "%dx\n%d\n%dkg", my_ex.sets, my_ex.reps, my_ex.weight);
+	snprintf(title, sizeof(title), "%s", my_ex.name);
+	text_layer_set_text(exercise_layer, title);
 	text_layer_set_text(titles_layer, "Sets:\nReps:\nWeight:");
 	text_layer_set_text(numbers_layer, numbers);
 
