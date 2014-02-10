@@ -1,5 +1,7 @@
 #include <pebble.h>
 
+#define MAX_WORKOUTS 7
+
 typedef struct {
 	char *name;
 	int sets, reps, weight;
@@ -11,6 +13,8 @@ typedef struct {
 } Workout;
 
 int total_workouts = 0;
+Workout workouts[MAX_WORKOUTS];
+SimpleMenuItem workout_menu[MAX_WORKOUTS];
 
 Window *window;
 TextLayer *exercise_layer, *titles_layer, *numbers_layer;
@@ -30,15 +34,15 @@ static Workout newWorkout(int number, Exercise *exercises) {
 	return w;
 }
 
-static void setWorkout(int i) {
+static void setWorkout(int key) {
 	Exercise exs[3] = {
 		newExercise("Abdominal", 4, 20, 0),
 		newExercise("Supino", 4, 12, 15),
 		newExercise("Tríceps testa", 4, 12, 35)
 	};
-	Workout workout = newWorkout(i, exs);
+	Workout workout = newWorkout(key, exs);
 
-	persist_write_data(i, &workout, sizeof(workout));
+	persist_write_data(key, &workout, sizeof(workout));
 }
 
 static Workout getWorkout(int key) {
@@ -50,7 +54,27 @@ static Workout getWorkout(int key) {
 	return read_data;
 }
 
+static void loadMenu(void) {
+	GBitmap *icons;
+	for(int w = 0; w <= sizeof(workouts); w++) {
+		switch (workouts[w].letter) {
+			case 'A': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_A); break;
+			case 'B': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_B); break;
+			case 'C': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_C); break;
+			case 'D': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_D); break;
+			case 'E': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_E); break;
+			case 'F': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_F); break;
+			case 'G': icons[w] = gbitmap_create_with_resource(RESOURCE_ID_ICON_WORKOUT_G); break;
+		}
+
+		
+	}
+}
+
 static void begin(void) {
+	setWorkout(1);
+	workouts[0] = getWorkout(1);
+
 	window              = window_create();
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_frame(window_layer);
@@ -66,7 +90,6 @@ static void begin(void) {
 	text_layer_set_font(numbers_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 	text_layer_set_text_alignment(numbers_layer, GTextAlignmentLeft);
 
-	setWorkout(1);
 	Workout my_workout = getWorkout(1);
 	Exercise my_ex = my_workout.exercises[2];
 
