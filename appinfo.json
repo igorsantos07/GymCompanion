@@ -13,6 +13,48 @@
         "watchface": false
     },
     "resources": {
-        "media": []
+        "media": [
+            {
+                "type": "png",
+                "name": "APP_ICON",
+                "file": "icons/app.png",
+                "menuIcon": true
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_A",
+                "file": "icons/workouts/a.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_B",
+                "file": "icons/workouts/b.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_C",
+                "file": "icons/workouts/c.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_D",
+                "file": "icons/workouts/d.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_E",
+                "file": "icons/workouts/e.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_F",
+                "file": "icons/workouts/f.png"
+            },
+            {
+                "type": "png",
+                "name": "ICON_WORKOUT_G",
+                "file": "icons/workouts/g.png"
+            }
+        ]
     }
 }
