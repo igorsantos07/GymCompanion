@@ -2,12 +2,12 @@
     "versionLabel": "0.1",
     "uuid": "04d63720-801f-48e1-8e21-5d638938a068",
     "appKeys": {},
-    "longName": "Gym companion",
+    "longName": "Gym Companion",
     "versionCode": 1,
     "capabilities": [
         "configurable"
     ],
-    "shortName": "Gym companion",
+    "shortName": "Gym Companion",
     "companyName": "igorsantos07",
     "watchapp": {
         "watchface": false
