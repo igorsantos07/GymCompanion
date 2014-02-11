@@ -1,3 +1,6 @@
 build/*
 .lock-waf_linux2_build
 pebble-screenshot*
+.project
+.cproject
+.externalToolBuilders
