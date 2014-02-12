@@ -10,7 +10,8 @@ typedef struct {
 } Exercise;
 
 typedef struct {
-	char      letter;
+	char     letter;
+	char    *description;
 	Exercise *exercises;
 } Workout;
 
@@ -39,25 +40,14 @@ static Exercise newExercise(char *name, int sets, int reps, int weight) {
 	return ex;
 }
 
-/*
- * TODO: should stop creating workouts when total_workouts = MAX_WORKOUTS and log that instead
- * TODO: this function should be syncronized with the workouts array!
- */
-static Workout newWorkout(int number, Exercise *exercises) {
-	Workout w = { .letter = itoc(number), .exercises = exercises };
+static Workout newWorkout(int number, char *description, Exercise *exercises) {
+	/*
+	 * TODO: should stop creating workouts when total_workouts = MAX_WORKOUTS and log that instead
+	 * TODO: this function should be syncronized with the workouts array!
+	 */
+	Workout w = { .letter = itoc(number), .description = description, .exercises = exercises };
 	++total_workouts;
 	return w;
-}
-
-static void setWorkout(int key) {
-	Exercise exs[3] = {
-		newExercise("Abdominal", 4, 20, 0),
-		newExercise("Supino", 4, 12, 15),
-		newExercise("Tríceps testa", 4, 12, 35)
-	};
-	Workout workout = newWorkout(key, exs);
-
-	persist_write_data(key, &workout, sizeof(workout));
 }
 
 static Workout getWorkout(int key) {
@@ -80,7 +70,7 @@ static void loadWorkoutMenu(void) {
 		snprintf(title, 10, "Workout %c", workouts[w].letter);
 		workout_menu[w] = (SimpleMenuItem) {
 			.title    = title,
-			.subtitle = "Here be subtitles",
+			.subtitle = workouts[w].description,
 			.callback = workoutSelected,
 			.icon     = gbitmap_create_with_resource(icon_ids[w])
 		};
@@ -108,12 +98,47 @@ static void loadExerciseDetailsScreen(void) {
 	
 }
 
-static void begin(void) {
-	setWorkout(1);
-	setWorkout(2);
+static void setFakeWorkout(int key) {
+	Exercise exs[4];
+	Workout workout;
+	switch (key) {
+		case 1:
+			exs[0] = newExercise("Abdominal", 4, 20, 0);
+			exs[1] = newExercise("Supino", 4, 12, 15);
+			exs[2] = newExercise("Tríceps testa", 4, 12, 35);
+			workout = newWorkout(key, "Abdomen, chest, triceps", exs);
+		break;
+		
+		case 2:
+			exs[0] = newExercise("Bíceps concentrado", 4, 8, 12);
+			exs[1] = newExercise("Leg press 45o", 4, 10, 50);
+			exs[2] = newExercise("Agachamento Nakagym", 4, 10, 15);
+			exs[3] = newExercise("Mesa flexora", 4, 10, 45);
+			workout = newWorkout(key, "Biceps, legs", exs);
+		break;
+		
+		default:
+		case 3:
+			exs[0] = newExercise("Puxada triângulo", 4, 10, 65);
+			exs[1] = newExercise("Remada 3 apoios", 4, 8, 18);
+			workout = newWorkout(key, "Shoulders, lower back", exs);
+		break;
+	}
+
+	persist_write_data(key, &workout, sizeof(workout));
+}
+static void fakeData(void) {
+	setFakeWorkout(1);
+	setFakeWorkout(2);
+	setFakeWorkout(3);
 	workouts[0] = getWorkout(1);
 	workouts[1] = getWorkout(2);
+	workouts[2] = getWorkout(3);
+}
 
+static void begin(void) {
+	fakeData();
+	
 	window              = window_create();
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds        = layer_get_frame(window_layer);
