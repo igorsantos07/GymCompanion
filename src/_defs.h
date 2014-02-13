@@ -2,18 +2,24 @@
 #define DEFINES
 
 	#define MAX_WORKOUTS 7
+	#define MAX_EXERCISES 20
 
 	typedef struct {
-		char *name;
-		int   sets,
-		      reps,
-		      weight;
+		char   *name;
+		uint16_t id;
+		uint16_t workout_id;
+		uint16_t sets;
+		uint16_t reps;
+		uint16_t weight;
+		uint16_t interval;
 	} Exercise;
+//	} __attribute__((__packed__)) Exercise;
 
 	typedef struct {
+		uint16_t id;
 		char     letter;
 		char    *description;
-		Exercise *exercises;
+		uint16_t exercises_length;
 	} Workout;
 
 	int icon_ids[] = { RESOURCE_ID_ICON_WORKOUT_A, RESOURCE_ID_ICON_WORKOUT_B,
@@ -22,5 +28,5 @@
 	};
 	
 	Workout workouts[MAX_WORKOUTS];
-	int total_workouts = 0;
+	int workouts_length = 0;
 #endif
