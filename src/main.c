@@ -1,5 +1,6 @@
-#include <pebble.h>
-#include "_defs.h"
+#include "defs.h"
+
+Workout workouts[MAX_WORKOUTS];
 
 SimpleMenuItem    workout_menu[MAX_WORKOUTS];
 SimpleMenuLayer  *workout_menu_layer;
@@ -8,77 +9,13 @@ SimpleMenuLayer  *exercises_menu_layer;
 
 DataLoggingSessionRef logger;
 
-static char itoc(uint16_t number) { return number + 64; }
-static uint16_t ctoi(char letter) { return letter - 64; } 
+//static void loadRepsScreen(int index, void *ctx) {
+//
+//}
 
-static Exercise newExercise(uint16_t id, uint16_t workout_id, char *name, uint16_t sets, uint16_t reps, uint16_t weight, uint16_t interval) {
-	Exercise ex = {
-		.workout_id = workout_id,
-		.name       = name,
-		.sets       = sets,
-		.reps       = reps,
-		.weight     = weight,
-		.interval   = interval
-	};
-	return ex;
-}
-
-static Workout newWorkout(uint16_t id, char *description, uint16_t exercises_length) {
-	// TODO: should stop creating workouts when total_workouts = MAX_WORKOUTS and log that instead
-	// TODO: this function should be syncronized with the workouts array!
-	Workout w = {
-		.id				  = id,
-		.letter           = itoc(id),
-		.description      = description,
-		.exercises_length = exercises_length
-	};
-	++workouts_length;
-	return w;
-}
-
-static Workout getWorkout(uint32_t id) {
-	Workout read_data;
-
-	if (persist_exists(id))
-		persist_read_data(id, &read_data, sizeof(read_data));
-
-	return read_data;
-}
-
-static int setWorkout(Workout workout) {
-	int written = persist_write_data(workout.id, &workout, sizeof(workout));
-	return written;
-}
-
-static uint32_t genExerciseKey(uint16_t workout_id, uint16_t exercise_id) {
-	//TODO: should throw an error, since those numbers are bigger than we want
-	if (exercise_id >= 100 || workout_id >= 10) return false;
-	return (workout_id * 100) + exercise_id;
-}
-
-static Exercise getExercise(uint16_t workout_id, uint16_t id) {
-	Exercise read_data;
-	uint16_t key = genExerciseKey(workout_id, id);
-		
-	if (persist_exists(key))
-		persist_read_data(key, &read_data, sizeof(read_data));
-	
-	return read_data;
-}
-
-static int setExercise(Exercise exercise) {
-	uint16_t id = genExerciseKey(exercise.workout_id, exercise.id);
-	int written = persist_write_data(id, &exercise, sizeof(exercise));
-	return written;
-}
-
-static void loadRepsScreen(int index, void *ctx) {
-	
-}
-
-static void unloadExerciseMenu(void) {
-	simple_menu_layer_destroy(exercises_menu_layer);
-}
+//static void unloadExerciseMenu(void) {
+//	simple_menu_layer_destroy(exercises_menu_layer);
+//}
 
 static void loadExercisesMenu(int index, void *ctx) {
 	Window *window      = window_create();
@@ -97,10 +34,10 @@ static void loadExercisesMenu(int index, void *ctx) {
 	text_layer_set_text(exercise_layer, debug);
 	layer_add_child(window_layer, text_layer_get_layer(exercise_layer));
 	window_stack_push(window, true);
-	
-	
-	
-	
+
+
+
+
 	//transformar "Exercise ex" num array de exercicios externo, assim como funciona com os workouts.
 	//depois, se funcionar, a gente pergunta no fórum como otimizar isso
 	//vai ser necessário zerar o array pra cada vez que essa tela for carregada, pra nao acumular os exercicios do workout anterior no atual
@@ -115,7 +52,7 @@ static void loadExercisesMenu(int index, void *ctx) {
 //			.callback = loadRepsScreen
 //		};
 //	}
-//	
+//
 //	SimpleMenuSection ex_sections[1] = {
 //		(SimpleMenuSection) {
 //			.title     = "Choose first exercise:",
@@ -130,14 +67,14 @@ static void loadExercisesMenu(int index, void *ctx) {
 //	window_stack_push(window, true);
 }
 
-static void unloadWorkoutMenu(void) {
-	simple_menu_layer_destroy(workout_menu_layer);
-}
+//static void unloadWorkoutMenu(void) {
+//	simple_menu_layer_destroy(workout_menu_layer);
+//}
 
 static void loadWorkoutMenu(void) {
 	Window *window      = window_create();
 	Layer *window_layer = window_get_root_layer(window);
-	GRect bounds        = layer_get_frame(window_layer); 
+	GRect bounds        = layer_get_frame(window_layer);
 
 	for(int w = 0; w < workouts_length; w++) {
 		workouts[w] = getWorkout(w+1);
@@ -150,7 +87,7 @@ static void loadWorkoutMenu(void) {
 			.icon     = gbitmap_create_with_resource(icon_ids[w])
 		};
 	}
-	
+
 	SimpleMenuSection sections[1] = {
 		(SimpleMenuSection) {
 			.title     = "Today's workout is...",
@@ -166,11 +103,11 @@ static void loadWorkoutMenu(void) {
 }
 
 //static void loadIntervalScreen(void) {
-//	
+//
 //}
 
 //static void loadExerciseDetailsScreen(void) {
-//	
+//
 //}
 
 static void setFakeWorkout(uint16_t id) {
@@ -182,7 +119,7 @@ static void setFakeWorkout(uint16_t id) {
 			setExercise(newExercise(3, id, "Tríceps testa", 4, 12, 35, 45));
 			workout = newWorkout(id, "Abdomen, chest, triceps", 3);
 		break;
-		
+
 		case 2:
 			setExercise(newExercise(1, id, "Bíceps concentrado", 4, 8, 12, 45));
 			setExercise(newExercise(2, id, "Leg press 45o", 4, 10, 50, 60));
@@ -190,7 +127,7 @@ static void setFakeWorkout(uint16_t id) {
 			setExercise(newExercise(4, id, "Mesa flexora", 4, 10, 45, 60));
 			workout = newWorkout(id, "Biceps, legs", 4);
 		break;
-		
+
 		default:
 		case 3:
 			setExercise(newExercise(1, id, "Puxada triângulo", 4, 10, 65, 45));
