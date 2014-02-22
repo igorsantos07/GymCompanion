@@ -1,6 +1,9 @@
 build/*
 .lock-waf_linux2_build
 pebble-screenshot*
-.project
-.cproject
-.externalToolBuilders
+
+# Netbeans build files and other stuff
+nbproject
+GymCompanion.mk
+GymCompanion.project
+GymCompanion.workspace
