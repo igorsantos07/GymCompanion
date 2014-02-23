@@ -2,7 +2,7 @@
     #define WORKOUT_H
     #include <pebble.h>
 
-    int workouts_length = 0;
+    extern int workouts_length;
 
     typedef struct {
         uint16_t id;

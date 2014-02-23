@@ -1,6 +1,8 @@
 #include "Workout.h"
 #include "../generic.h"
 
+int workouts_length = 0;
+
 Workout newWorkout(uint16_t id, char *description, uint16_t exercises_length) {
 	// TODO: should stop creating workouts when total_workouts = MAX_WORKOUTS and log that instead
 	// TODO: this function should be syncronized with the workouts array!
