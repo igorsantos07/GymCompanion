@@ -2,6 +2,8 @@
     #define EXERCISE_H
     #include <pebble.h>
 
+    #define MAX_EXERCISES 20
+
     typedef struct {
         char   *name;
         uint16_t id;

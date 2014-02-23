@@ -2,6 +2,7 @@
 #include "../generic.h"
 
 int workouts_length = 0;
+Workout workouts[MAX_WORKOUTS];
 
 Workout newWorkout(uint16_t id, char *description, uint16_t exercises_length) {
 	// TODO: should stop creating workouts when total_workouts = MAX_WORKOUTS and log that instead
