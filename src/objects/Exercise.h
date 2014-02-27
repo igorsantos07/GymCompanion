@@ -5,7 +5,7 @@
     #define MAX_EXERCISES 20
 
     typedef struct {
-        char   *name;
+        char    *name;
         uint16_t id;
         uint16_t workout_id;
         uint16_t sets;
