@@ -1,4 +1,5 @@
 build/*
+node_modules
 .lock-waf_linux2_build
 pebble-screenshot*
 
