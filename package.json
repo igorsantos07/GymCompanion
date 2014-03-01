@@ -2,11 +2,12 @@
 	"name": "gymcompanion",
 	"version": "1.0.0",
 	"dependencies": {
-		"minify": "0.2.5",
-		"coffee-script": "1.7.1"
+                "less"         : "1.7.0",
+		"coffee-script": "1.7.1",
+		"minify"       : "0.2.5"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:igorsantos07/Pebble-GymCompanion.git"
+		"url" : "git@github.com:igorsantos07/Pebble-GymCompanion.git"
 	}
 }

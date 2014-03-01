@@ -1,5 +1,7 @@
 all:
 	pebble build
+web:
+	./web_compile
 clean:
 	pebble clean
 install:

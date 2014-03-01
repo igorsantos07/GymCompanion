@@ -1,1 +1,2 @@
-alert 'oi'
+al = (msg)->
+  alert msg
