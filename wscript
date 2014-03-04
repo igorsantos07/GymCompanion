@@ -14,7 +14,7 @@ def build(ctx):
     ctx.pbl_program(source=ctx.path.ant_glob('src/**/*.c'), target='pebble-app.elf')
 
     pebble_integration = ctx.path.get_bld().make_node('src/js/pebble-js-app.js')
-    ctx(rule='../web_compile', target=pebble_integration)
+    ctx(rule='cd .. && ./web_compile', target=pebble_integration)
 
     # use build/src/js/pebble-js-app.js
     ctx.pbl_bundle(elf='pebble-app.elf', js=pebble_integration)

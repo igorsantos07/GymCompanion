@@ -4,7 +4,8 @@
 	"dependencies": {
                 "less"         : "1.7.0",
 		"coffee-script": "1.7.1",
-		"minify"       : "0.2.5"
+		"minify"       : "0.2.5",
+                "uncss"        : "0.7.9"
 	},
 	"repository": {
 		"type": "git",

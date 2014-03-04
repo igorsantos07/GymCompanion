@@ -9,25 +9,28 @@ print   "================================"
 dev_null = open('/dev/null', 'w')
 def minify(file):
 	print "  > Minifying "+file.rpartition('/')[2]
-	check_call(node+'/minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
+	check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
 
-root     = os.path.dirname(os.path.abspath(__file__))
-node     = root+'/node_modules/.bin'
-root_js  = root+'/src/js'
-build_js = root+'/build/src/js'
+# root     = os.path.dirname(os.path.abspath(__file__))+'/'
+root     = ''
+node     = root+'node_modules/.bin/'
+root_js  = root+'src/js/'
+build_js = root+'build/src/js/'
 
-html       = root_js+'/index.html'
-lib        = root_js+'/libs/minified-web.js'
-js         = build_js+'/script.js'
-css        = build_js+'/styles.css'
-final_path = build_js+'/complete.html'
+html       = root_js+'index.html'
+lib        = root_js+'libs/minified-web.js'
+js         = build_js+'script.js'
+css        = build_js+'styles.css'
+final_path = build_js+'complete.html'
 
 # Compiling CoffeeScript and Less
 print "==> Brewing CoffeeScripts"
-check_call(node+'/coffee --no-header -bc -o '+build_js+' '+root_js, shell=True)
+check_call(node+'coffee --no-header -bc -o '+build_js+' '+root_js, shell=True)
 minify(js)
 print "==> Shortening CSS's"
-check_call(node+'/lessc '+root_js+'/styles.less '+css, shell=True)
+check_call(node+'lessc '+root_js+'/less/styles.less '+css, shell=True)
+print "  > Removing unused rules"
+check_call(node+'uncss -s ../../'+css+' '+html+' > '+css+'.tmp && mv '+css+'.tmp '+css, shell=True)
 minify(css)
 
 # Merges CSS and JS into the HTML file
@@ -49,10 +52,10 @@ final_file = open(final_path)
 
 # Bundling that HTML into the main PebbleKit JS File
 print "==> Bundling HTML code into the PebbleKit JS file"
-pebblekit_path = build_js+'/pebble-js-app.js'
+pebblekit_path = build_js+'pebble-js-app.js'
 pebblekit_file = open(pebblekit_path, 'w')
-pebblekit_file.write("config_html = '"+final_file.read().replace("'","\'")+"';")
-pebblekit_file.write(open(build_js+'/pebble-integration.js').read())
+pebblekit_file.write("config_html = "+repr(final_file.read())+";\n")
+pebblekit_file.write(open(build_js+'pebble-integration.js').read())
 pebblekit_file.close()
 minify(pebblekit_path)
 
