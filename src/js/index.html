@@ -9,8 +9,64 @@
             <h1>GymCompanion</h1>
         </header>
         
-        <button class="big" id="newWorkout">Add new Workout</button>
+        <form class="uk-form uk-form-stacked">
+            <button class="big" id="newWorkout"><i></i> Add new Workout</button>
+            
+            <fieldset>
+                <h2>Workout <em>A</em></h2>
+                <span>Unsaved</span>
+                
+                <div>
+                    <label for="interval">Interval between exercises:</label>
+                    <input type="number" id="workout-interval" min="0" max="999"/>
+                    <span>in seconds</span>
+                </div>
+
+                <fieldset>
+                    <input type="text" id="name" placeholder="Name of Exercise #1"/>
+                    <div>
+                        <div>
+                            <label for="sets">Sets:</label>
+                            <input type="number" id="sets" min="0" max="99"/>
+                        </div>
+                        <div>
+                            <label for="reps">Reps:</label>
+                            <input type="number" id="reps" min="0" max="99"/>
+                        </div>
+                        <div>
+                            <label for="sets">Weight:</label>
+                            <input type="number" id="sets" min="0" max="999"/>
+                        </div>
+                        <div>
+                            <label for="reps">Interval:</label>
+                            <input type="number" id="reps" min="0" max="999"/>
+                        </div>
+                </fieldset>
+
+                <fieldset>
+                    <input type="text" id="name" placeholder="Name of Exercise #2"/>
+                    <div>
+                        <div>
+                            <label for="sets">Sets:</label>
+                            <input type="number" id="sets" min="0" max="99"/>
+                        </div>
+                        <div>
+                            <label for="reps">Reps:</label>
+                            <input type="number" id="reps" min="0" max="99"/>
+                        </div>
+                        <div>
+                            <label for="sets">Weight:</label>
+                            <input type="number" id="sets" min="0" max="999"/>
+                        </div>
+                        <div>
+                            <label for="reps">Interval:</label>
+                            <input type="number" id="reps" min="0" max="999"/>
+                        </div>
+                </fieldset>
+            </fieldset>
+        </form>
         
+        <footer>Add here donation link to igorsantos07@gmail.com</footer>
         <script>
             //HERE BE JS
         </script>

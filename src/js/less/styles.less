@@ -1,0 +1,182 @@
+@colorPlight:   #FFD28A;
+@colorPlighter: #FFE1B0;
+@colorPMedium:  #FBB911;
+@colorPDark:    #D3A863;
+@colorPDarker:  #C2882D;
+@colorSLighter: white;
+@colorSLight:   #CCC;
+@colorSMedium:  #999;
+@colorSDark:    #666;
+@colorSDarker:  black;
+
+@import (less) "ui-kit.css";
+
+i { // Icons. This tag should never be used to italicize text, <em> is made for that
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+}
+
+body {
+    font-family: sans-serif;
+    position: relative;
+}
+
+header {
+    .uk-navbar;
+    height: 65px;
+    box-shadow: 0px 0px 20px 5px #555;
+    
+    h1 {
+        background: data-uri("image/png;base64", "../img/logo.png") no-repeat 5px 5px;
+        padding-left: 60px;
+        width: 310px;
+        margin: 0px auto;
+        font-weight: bold;
+        line-height: 60px;
+    }
+}
+
+@footer-height: 30px;
+@content-margin: 20px;
+footer {
+    width: 100%;
+    height: @footer-height;
+    position: absolute;
+    bottom: 0;
+    background-color: darken(@colorSDark, 10%);
+    box-shadow: 0px 0px 20px 3px #555;
+    line-height: @footer-height;
+    text-align: center;
+}
+
+form {
+    display: block;
+    margin: @content-margin;
+    padding-bottom: @content-margin + @footer-height;
+    margin-bottom: 0px;
+}
+
+button {
+    &.big {
+        .uk-button;
+        width: 100%;
+        line-height: 38px;
+        font-size: 1.3em;
+        font-weight: bold;
+        height: 50px;
+    }
+}
+
+#newWorkout i {
+    background-image: data-uri("image/png;base64", "../img/add-24px.png");
+}
+
+fieldset {
+    .uk-panel;
+    .uk-panel-box;
+    .uk-panel-box-primary;
+    > h2 {
+        .uk-panel-title;
+        em {
+            .uk-badge;
+            .uk-badge-notification;
+            font-weight: bold;
+            font-style: normal;
+            font-size: 16px;
+        }
+    }
+    > span {
+        .uk-badge;
+        .uk-panel-badge;
+        .uk-badge-warning;
+        top: 5px;
+        right: 5px;
+    }
+    
+    // Those div styles where copied from .uk-form-row, to simplify markup
+    div {
+        & {
+            margin-top: 15px;
+        }
+        &:before, &:after {
+            content: " ";
+            display: table;
+        }
+        &:after {
+            clear: both;
+        }
+        span {
+            .uk-form-help-inline;
+            font-style: italic;
+        }
+    }
+    
+    label {
+        font-weight: bold;
+        display: inline-block;
+        padding-right: 10px;
+        text-align: right;
+    }
+    input {
+        -webkit-transition: all linear 0.2s;
+        transition: all linear 0.2s;
+    }
+    input[type=number] {
+        width: 70px;
+        &::-webkit-input-placeholder { font-size: 12px; }
+        &::-moz-placeholder { color: white; }
+        &:-moz-placeholder { color: white; }
+        &:-ms-input-placeholder { color: white; }
+    }
+    input + input {
+        margin-left: 20px;
+    }
+    
+    fieldset {
+        .uk-panel-box-secondary;
+        padding: 10px;
+        
+        div {
+            margin-top: 0px;
+        }
+        div div {
+            .uk-width-1-2;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        label {
+            width: 60px;
+        }
+        
+        [id*='name'] {
+            .uk-form-blank;
+            .uk-width-1-1;
+            border-width: 1px;
+            border-color: transparent transparent white transparent !important;
+            border-radius: 0px;
+            color: white !important;
+            font-weight: bold;
+            padding: 2px 4px;
+            font-size: 16px;
+            &:focus {
+                border-color: white !important;
+                border-radius: 4px;
+                background-color: lighten(@colorSMedium, 10%) !important;
+            }
+            
+            &::-webkit-input-placeholder { .name-placeholder; }
+            &::-moz-placeholder          { .name-placeholder; }
+            &:-moz-placeholder           { .name-placeholder; }
+            &:-ms-input-placeholder      { .name-placeholder; }
+            .name-placeholder() {
+                font-weight: normal;
+                font-style: italic;
+                color: white;
+            }
+        }
+    }
+}
