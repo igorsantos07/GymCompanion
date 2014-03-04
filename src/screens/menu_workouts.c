@@ -5,6 +5,7 @@
 
 SimpleMenuItem    workout_menu[MAX_WORKOUTS];
 SimpleMenuLayer  *workout_menu_layer;
+SimpleMenuSection sections[1];
 
 void unloadWorkoutMenu(void) {
 	simple_menu_layer_destroy(workout_menu_layer);
@@ -30,12 +31,10 @@ void loadWorkoutMenu(void) {
 	}
 
     APP_LOG(APP_LOG_LEVEL_INFO, "Creating Workout Menu with %d items", workouts_length);
-	SimpleMenuSection sections[1] = {
-		(SimpleMenuSection) {
-			.title     = "Today's workout is...",
-			.num_items = workouts_length,
-			.items     = workout_menu
-		}
+	sections[0] = (SimpleMenuSection) {
+            .title     = "Today's workout is...",
+            .num_items = workouts_length,
+            .items     = workout_menu
 	};
 
 	workout_menu_layer = simple_menu_layer_create(bounds, window, sections, 1, NULL);
