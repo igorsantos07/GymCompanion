@@ -12,56 +12,37 @@
         <form class="uk-form uk-form-stacked">
             <button class="big" id="newWorkout"><i></i> Add new Workout</button>
             
-            <fieldset>
+            <fieldset id="template_workout">
                 <h2>Workout <em>A</em></h2>
                 <span>Unsaved</span>
-                
+
                 <div>
                     <label for="interval">Interval between exercises:</label>
-                    <input type="number" id="workout-interval" min="0" max="999"/>
+                    <input type="number" name="workout-interval" min="0" max="999"/>
                     <span>in seconds</span>
                 </div>
 
-                <fieldset>
-                    <input type="text" id="name" placeholder="Name of Exercise #1"/>
-                    <div>
-                        <div>
-                            <label for="sets">Sets:</label>
-                            <input type="number" id="sets" min="0" max="99"/>
-                        </div>
-                        <div>
-                            <label for="reps">Reps:</label>
-                            <input type="number" id="reps" min="0" max="99"/>
-                        </div>
-                        <div>
-                            <label for="sets">Weight:</label>
-                            <input type="number" id="sets" min="0" max="999"/>
-                        </div>
-                        <div>
-                            <label for="reps">Interval:</label>
-                            <input type="number" id="reps" min="0" max="999"/>
-                        </div>
-                </fieldset>
 
-                <fieldset>
-                    <input type="text" id="name" placeholder="Name of Exercise #2"/>
+                <fieldset id="template_Exercise">
+                    <input type="text" name="name" placeholder="Name of Exercise #1"/>
                     <div>
                         <div>
                             <label for="sets">Sets:</label>
-                            <input type="number" id="sets" min="0" max="99"/>
+                            <input type="number" name="sets" min="0" max="99"/>
                         </div>
                         <div>
                             <label for="reps">Reps:</label>
-                            <input type="number" id="reps" min="0" max="99"/>
+                            <input type="number" name="reps" min="0" max="99"/>
                         </div>
                         <div>
-                            <label for="sets">Weight:</label>
-                            <input type="number" id="sets" min="0" max="999"/>
+                            <label for="weight">Weight:</label>
+                            <input type="number" name="weight" min="0" max="999"/>
                         </div>
                         <div>
-                            <label for="reps">Interval:</label>
-                            <input type="number" id="reps" min="0" max="999"/>
+                            <label for="interval">Interval:</label>
+                            <input type="number" name="interval" min="0" max="999"/>
                         </div>
+                    </div>
                 </fieldset>
             </fieldset>
         </form>

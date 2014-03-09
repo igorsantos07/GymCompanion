@@ -9,7 +9,7 @@ print   "================================"
 dev_null = open('/dev/null', 'w')
 def minify(file):
 	print "  > Minifying "+file.rpartition('/')[2]
-	check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
+	#check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
 
 # root     = os.path.dirname(os.path.abspath(__file__))+'/'
 root     = ''
@@ -18,7 +18,8 @@ root_js  = root+'src/js/'
 build_js = root+'build/src/js/'
 
 html       = root_js+'index.html'
-lib        = root_js+'libs/minified-web.js'
+#lib        = root_js+'libs/minified-web.js'
+lib        = root_js+'libs/minified.js'
 js         = build_js+'script.js'
 css        = build_js+'styles.css'
 final_path = build_js+'complete.html'
