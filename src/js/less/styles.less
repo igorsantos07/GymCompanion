@@ -64,8 +64,9 @@ form {
 }
 
 button {
+    .uk-button;
+    
     &.big {
-        .uk-button;
         width: 100%;
         line-height: 38px;
         font-size: 1.3em;
@@ -74,8 +75,15 @@ button {
     }
 }
 
-#newWorkout i {
+#newWorkout i,
+.newExercise i {
     background-image: data-uri("image/png;base64", "../img/add-24px.png");
+}
+
+.newExercise {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
 }
 
 fieldset {
