@@ -36,7 +36,9 @@ class Workout
 
     @root.set '$$slide', 0 if animated
     $root.add @root
-    @root.animate {$$slide: 1}, 300 if animated
+    if animated
+      @root.animate {$$slide: 1}, 300
+      .then => @root.set '$height', 'auto'
 
   addExercise: (animated = true, exercise = null) ->
     if !exercise then exercise = new Exercise
