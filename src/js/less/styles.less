@@ -17,9 +17,7 @@
 
 i { // Icons. This tag should never be used to italicize text, <em> is made for that
     display: inline-block;
-    vertical-align: middle;
-    width: 24px;
-    height: 24px;
+    vertical-align: sub;
     background-repeat: no-repeat;
 }
 
@@ -38,6 +36,7 @@ header {
         padding-left: 60px;
         width: 310px;
         margin: 0px auto;
+        font-size: 32px;
         font-weight: bold;
         line-height: 60px;
     }
@@ -73,12 +72,28 @@ button {
         font-weight: bold;
         height: 50px;
     }
+    &.save {
+        .uk-button-success;
+    }
 }
 
-#newWorkout i,
-.newExercise i {
-    background-image: data-uri("image/png;base64", "../img/add-24px.png");
+#newWorkout {
+    width: 64%;
+    margin-right: 1%;
+    + .save {
+        width: 34%;
+    }
 }
+
+.button-icon(@name, @size) {
+    background-image: data-uri("image/png;base64", "../img/@{name}-@{size}.png");
+    width: @size;
+    height: @size;
+    margin-right: @size/4;
+}
+#newWorkout i  { .button-icon('add', 22px); }
+.newExercise i { .button-icon('add', 16px); }
+.save i        { .button-icon('done', 22px); }
 
 .newExercise {
     display: block;

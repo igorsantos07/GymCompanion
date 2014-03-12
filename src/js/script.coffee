@@ -35,7 +35,7 @@ class Workout
     Workout.list.push @
 
     @root.set '$$slide', 0 if animated
-    $root.add @root
+    $('.save:last-child', $root).addBefore @root
     if animated
       @root.animate {$$slide: 1}, 300
       .then => @root.set '$height', 'auto'
@@ -63,7 +63,7 @@ $('form').on 'click', ->
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
 # Sample code
-w = new Workout(false)
-w.addExercise(false)
 e = new Exercise('Abdominal', 4, 20, 10, 60)
+w = new Workout(false)
 w.addExercise(false, e)
+w.addExercise(false)
