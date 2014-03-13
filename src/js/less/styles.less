@@ -62,6 +62,7 @@ form {
     margin-bottom: 0px;
 }
 
+@big-button-height: 50px;
 button {
     .uk-button;
     
@@ -70,18 +71,22 @@ button {
         line-height: 38px;
         font-size: 1.3em;
         font-weight: bold;
-        height: 50px;
+        height: @big-button-height;
     }
     &.save {
         .uk-button-success;
     }
 }
 
-#newWorkout {
-    width: 64%;
-    margin-right: 1%;
-    + .save {
-        width: 34%;
+#topButtons {
+    height: @big-button-height;
+    #newWorkout {
+        width: 66%;
+        float: left;
+        + .save {
+            width: 33%;
+            float: right;
+        }
     }
 }
 

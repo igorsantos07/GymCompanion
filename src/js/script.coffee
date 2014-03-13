@@ -35,7 +35,7 @@ class Workout
     Workout.list.push @
 
     @root.set '$$slide', 0 if animated
-    $('.save:last-child', $root).addBefore @root
+    $('form > .save:last-child', $root).addBefore @root
     if animated
       @root.animate {$$slide: 1}, 300
       .then => @root.set '$height', 'auto'
