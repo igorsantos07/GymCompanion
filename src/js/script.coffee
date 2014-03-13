@@ -49,14 +49,14 @@ class Workout
 
     # $('input', root).set 'name', (v) => "#{v}_#{@total_exercises}"
     root.set '$$slide', 0 if animated
-    @root.add root
+    $('.newExercise', @root).addBefore root
     root.animate {$$slide: 1}, 300 if animated
     if animated
       console.log('should move to the top of this root') #TODO
 
 $('#newWorkout').on 'click', ->
   new Workout
-  
+
 $('form').on 'click', ->
   workout_id = $(this).get('%workout')
   Workout.list[workout_id].addExercise()
