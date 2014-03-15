@@ -5,6 +5,14 @@ $$   = MINI.$$
 EE   = MINI.EE
 HTML = MINI.HTML
 
+
+window.data = "DUMMY_DATA"
+$('h1').fill window.data
+
+window.close = (data)->
+	window.location = "pebblejs://close##{encodeURIComponent(data)}"
+
+
 $root = $('form')
 $tpl_exercise = $('#template_exercise')
 $tpl_exercise.remove()
@@ -61,6 +69,10 @@ $('form').on 'click', ->
   workout_id = $(this).get('%workout')
   Workout.list[workout_id].addExercise()
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
+
+$('.save').on 'click', ->
+	json = JSON.stringify {workout: { exercises: [1,2,3,4] }}
+	window.close(json)
 
 # Sample code
 e = new Exercise('Abdominal', 4, 20, 10, 60)
