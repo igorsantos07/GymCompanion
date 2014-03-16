@@ -61,7 +61,7 @@ pebblekit_file.close()
 minify(pebblekit_path)
 
 final_size = os.path.getsize(pebblekit_path)
-print "  > Final file size: %.1fKb" % (final_size / 1024)
+print "  > Final file size: %.2fKb" % (final_size / 1024.0)
 
 print "================================"
 print "====> Web compilation done, sir!\n"
