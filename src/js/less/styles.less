@@ -26,11 +26,22 @@ body {
     position: relative;
 }
 
+#flash {
+	position: absolute;
+	top: 20px;
+	background-color: lightGrey;
+	color: black;
+	padding: 2px 5px;
+	border: 2px solid darkGrey;
+	transition: all 2s;
+	opacity: 0;
+}
+
 header {
     .uk-navbar;
     height: 65px;
     box-shadow: 0px 0px 20px 5px #555;
-    
+
     h1 {
         background: data-uri("image/png;base64", "../img/logo.png") no-repeat 5px 5px;
         padding-left: 60px;
@@ -65,7 +76,7 @@ form {
 @big-button-height: 50px;
 button {
     .uk-button;
-    
+
     &.big {
         width: 100%;
         line-height: 38px;
@@ -127,7 +138,7 @@ fieldset {
         top: 5px;
         right: 5px;
     }
-    
+
     // Those div styles where copied from .uk-form-row, to simplify markup
     div {
         & {
@@ -145,7 +156,7 @@ fieldset {
             font-style: italic;
         }
     }
-    
+
     label {
         font-weight: bold;
         display: inline-block;
@@ -166,11 +177,11 @@ fieldset {
     input + input {
         margin-left: 20px;
     }
-    
+
     fieldset {
         .uk-panel-box-secondary;
         padding: 10px;
-        
+
         > div {
             margin-top: 0px;
         }
@@ -178,11 +189,11 @@ fieldset {
             display: inline-block;
             width: 49%;
         }
-        
+
         label {
             width: 60px;
         }
-        
+
         input[name*='name'] {
             .uk-form-blank;
             .uk-width-1-1;
@@ -198,7 +209,7 @@ fieldset {
                 border-radius: 4px;
                 background-color: lighten(@colorSMedium, 10%) !important;
             }
-            
+
             &::-webkit-input-placeholder { .name-placeholder; }
             &::-moz-placeholder          { .name-placeholder; }
             &:-moz-placeholder           { .name-placeholder; }
