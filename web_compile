@@ -60,6 +60,9 @@ pebblekit_file.write(open(build_js+'pebble-integration.js').read())
 pebblekit_file.close()
 minify(pebblekit_path)
 
+final_size = os.path.getsize(pebblekit_path)
+print "  > Final file size: %.1fKb" % (final_size / 1024)
+
 print "================================"
 print "====> Web compilation done, sir!\n"
 exit(0)
