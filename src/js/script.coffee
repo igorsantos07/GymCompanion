@@ -8,14 +8,15 @@ HTML = MINI.HTML
 ##################### Global functions, objects and stuff ######################
 
 window.isPebble = false
+window.isPebble = true if window.location.hash.indexOf('pebble') >= 0
 window.data = "{}"
 
 window.close = (data)->
+	console.log "Got this to submit: #{data}"
 	url = "pebblejs://close##{encodeURIComponent(data)}"
 	if window.isPebble
 		window.location = url
 	else
-		console.log "Got this to submit: #{data}"
 		console.log "Should go to #{url}"
 		localStorage.setItem 'data', data
 		console.log "Data saved to localStorage, since you're not on the Pebble app"
@@ -24,16 +25,13 @@ if window.isPebble
 	$flash = $('#flash')
 	$flash.on 'click', -> $flash.set '$opacity', 0
 	console.log = (msg)->
+		msg = JSON.stringify(msg) if typeof msg == 'object'
 		$flash.fill msg
 		$flash.set '$opacity', 1
 
 Array.prototype.toJSON = ->
 	json = @map (e)-> if e.toJSON? then e.toJSON() else JSON.stringify(e)
 	"[#{json.join()}]"
-
-
-console.log(window.data)
-
 
 ############################## Classes definition ##############################
 
@@ -135,13 +133,10 @@ $('form').on 'click', ->
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
 $('.save').on 'click', ->
-	Workout.list.forEach (w)->
-		w.exercises.forEach (e)->
-			e.update()
+	Workout.list.forEach (w)-> w.exercises.forEach (e)-> e.update()
 	window.close Workout.list.toJSON()
 
 ##### Sample code
-$('h1').fill window.data
 e = new Exercise('Abdominal', 4, 20, 10, 60)
 w = new Workout(false, 60)
 w.addExercise(false, e)
