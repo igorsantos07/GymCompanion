@@ -18,8 +18,7 @@ root_js  = root+'src/js/'
 build_js = root+'build/src/js/'
 
 html       = root_js+'index.html'
-#lib        = root_js+'libs/minified-web.js'
-lib        = root_js+'libs/minified.js'
+libs       = [root_js+'libs/minified.js']
 js         = build_js+'script.js'
 css        = build_js+'styles.css'
 final_path = build_js+'complete.html'
@@ -42,7 +41,8 @@ for line in open(html):
 	if 'HERE BE CSS' in line:
 		final_file.write(open(css).read())
 	elif 'HERE BE JS' in line:
-		final_file.write(open(lib).read())
+		for lib in libs:
+                    final_file.write(open(lib).read())
 		final_file.write(open(js).read())
 	else:
 		final_file.write(line)
