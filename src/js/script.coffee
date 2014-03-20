@@ -4,6 +4,7 @@ $    = MINI.$
 $$   = MINI.$$
 EE   = MINI.EE
 HTML = MINI.HTML
+$body= $('body')
 
 ##################### Global functions, objects and stuff ######################
 
@@ -20,6 +21,19 @@ window.close = (data)->
 		console.log "Should go to #{url}"
 		localStorage.setItem 'data', data
 		console.log "Data saved to localStorage, since you're not on the Pebble app"
+
+window.scrollToElement = ($element)->
+	windowTop  = $body.get 'scrollTop'
+	topDiff    = $element[0].getBoundingClientRect().top - 15
+	color      = $element.get '$background-color'
+	altColor   = '#BBB'
+	blinkTime  = 350
+	scrollTime = if topDiff != 0 then 500 else 0
+	
+	$body.animate { scrollTop: windowTop + topDiff }, scrollTime
+	.then =>
+		$element.animate({'$background-color': altColor}, blinkTime)
+		.then => $element.animate({'$background-color': color}, blinkTime)
 
 if window.isPebble
 	$flash = $('#flash')
@@ -77,6 +91,8 @@ class Workout
 		if animated
 			@root.animate {$$slide: 1}, 300
 			.then => @root.set '$height', 'auto'
+			window.scrollToElement @root
+			# purposely out of the then(), scrolling while the element appears
 
 		exercises.forEach (e)=> @addExercise(false, e)
 
@@ -92,7 +108,7 @@ class Workout
 		$('.newExercise', @root).addBefore root
 		root.animate {$$slide: 1}, 300 if animated
 		if animated
-			console.log('should move to the top of this root') #TODO
+			window.scrollToElement root
 
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('@value')
@@ -135,9 +151,3 @@ $('form').on 'click', ->
 $('.save').on 'click', ->
 	Workout.list.forEach (w)-> w.exercises.forEach (e)-> e.update()
 	window.close Workout.list.toJSON()
-
-##### Sample code
-e = new Exercise('Abdominal', 4, 20, 10, 60)
-w = new Workout(false, 60)
-w.addExercise(false, e)
-w.addExercise(false)
