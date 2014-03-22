@@ -76,7 +76,7 @@ class Exercise
 class Workout
 	@letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 	@list: []
-	exercises: []
+	exercises = undefined;
 
 	constructor: (animated = true, @interval, exercises = []) ->
 		@root = $tpl_workout.clone()
@@ -94,6 +94,7 @@ class Workout
 			window.scrollToElement @root
 			# purposely out of the then(), scrolling while the element appears
 
+		@exercises = []
 		exercises.forEach (e)=> @addExercise(false, e)
 
 	addExercise: (animated = true, exercise = null) ->
