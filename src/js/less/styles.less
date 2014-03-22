@@ -93,8 +93,13 @@ button {
     }
 }
 
-#topButtons {
+.buttons {
     height: @big-button-height;
+
+    &:last-child {
+        margin-top: 15px;
+    }
+
     #newWorkout {
         width: 66%;
         float: left;
@@ -115,12 +120,6 @@ button {
 .newExercise i { .button-icon('add', 16px); }
 .save i        { .button-icon('done', 22px); }
 
-.newExercise {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-}
-
 fieldset {
     .uk-panel;
     .uk-panel-box;
@@ -129,12 +128,20 @@ fieldset {
 
     > h2 {
         .uk-panel-title;
+        display: inline-block;
         em {
             .uk-badge;
             .uk-badge-notification;
             font-weight: bold;
             font-style: normal;
             font-size: 16px;
+        }
+
+        + .newExercise {
+            display: inline-block;
+            width: auto;
+            margin-top: 0px;
+            margin-left: 20px;
         }
     }
     > span {
@@ -143,6 +150,12 @@ fieldset {
         .uk-badge-warning;
         top: 5px;
         right: 5px;
+    }
+
+    .newExercise:last-child {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
     }
 
     // Those div styles where copied from .uk-form-row, to simplify markup

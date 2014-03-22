@@ -29,7 +29,7 @@ window.scrollToElement = ($element)->
 	altColor   = '#BBB'
 	blinkTime  = 350
 	scrollTime = if topDiff != 0 then 500 else 0
-	
+
 	$body.animate { scrollTop: windowTop + topDiff }, scrollTime
 	.then =>
 		$element.animate({'$background-color': altColor}, blinkTime)
@@ -87,7 +87,7 @@ class Workout
 		Workout.list.push @
 
 		@root.set '$$slide', 0 if animated
-		$('form > .save:last-child', $root).addBefore @root
+		$('.buttons:last-child', $root).addBefore @root
 		if animated
 			@root.animate {$$slide: 1}, 300
 			.then => @root.set '$height', 'auto'
@@ -105,7 +105,7 @@ class Workout
 
 		# $('input', root).set 'name', (v) => "#{v}_#{@total_exercises}"
 		root.set '$$slide', 0 if animated
-		$('.newExercise', @root).addBefore root
+		$('.newExercise:last-child', @root).addBefore root
 		root.animate {$$slide: 1}, 300 if animated
 		if animated
 			window.scrollToElement root
