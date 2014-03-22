@@ -22,7 +22,7 @@ window.close = (data)->
 		localStorage.setItem 'data', data
 		console.log "Data saved to localStorage, since you're not on the Pebble app"
 
-window.scrollToElement = ($element)->
+window.scrollToElement = ($element, callback)->
 	windowTop  = $body.get 'scrollTop'
 	topDiff    = $element[0].getBoundingClientRect().top - 15
 	color      = $element.get '$background-color'
@@ -31,6 +31,7 @@ window.scrollToElement = ($element)->
 	scrollTime = if topDiff != 0 then 500 else 0
 
 	$body.animate { scrollTop: windowTop + topDiff }, scrollTime
+	.then -> callback?()
 	.then =>
 		$element.animate({'$background-color': altColor}, blinkTime)
 		.then => $element.animate({'$background-color': color}, blinkTime)
@@ -91,7 +92,7 @@ class Workout
 		if animated
 			@root.animate {$$slide: 1}, 300
 			.then => @root.set '$height', 'auto'
-			window.scrollToElement @root
+			window.scrollToElement @root, => $('input', @root)[0]?.focus()
 			# purposely out of the then(), scrolling while the element appears
 
 		@exercises = []
@@ -109,7 +110,7 @@ class Workout
 		$('.newExercise:last-child', @root).addBefore root
 		root.animate {$$slide: 1}, 300 if animated
 		if animated
-			window.scrollToElement root
+			window.scrollToElement root, -> $('input', root)[0].focus()
 
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('@value')
