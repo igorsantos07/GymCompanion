@@ -44,6 +44,8 @@ if window.isPebble
 		msg = JSON.stringify(msg) if typeof msg == 'object'
 		$flash.fill msg
 		$flash.set '$opacity', 1
+else
+	window.data = localStorage.data || '{}'
 
 Array.prototype.listToJSON = ->
 	json = @map (e)->
@@ -130,27 +132,27 @@ class Workout
 			interval: @interval
 			exercises: JSON.parse @exercises.listToJSON()
 
-	@fromJSON: (json)->
-		data = JSON.parse json
+	@rehydrate: (pojo)->
 		exercises = []
-		data.exercises.forEach (e)-> exercises.push Exercise.fromJSON(e)
-		new Workout(false, data.interval, exercises)
+		pojo.exercises.forEach (e)-> exercises.push Exercise.fromJSON(e)
+		new Workout(false, pojo.interval, exercises)
+
+	@fromJSON: (json)->
+		Workout.rehydrate JSON.parse(json)
+
+	@restore: (json)->
+		data = JSON.parse json
+		if Array.isArray data
+			workouts = []
+			data.forEach (single_data)-> workouts.push Workout.rehydrate(single_data)
+			return workouts
+		else
+			return Workout.rehydrate(data)
 
 	toString: -> @toJSON()
 
 
 ################################# Working code #################################
-
-if isPebble
-	window.data = JSON.parse window.data
-else
-	window.data = JSON.parse(localStorage.data || '{}')
-
-$root = $('form')
-$tpl_exercise = $('#template_exercise')
-$tpl_exercise.remove()
-$tpl_workout = $('#template_workout')
-$tpl_workout.remove()
 
 $('.newWorkout').on 'click', ->
 	new Workout
@@ -163,3 +165,13 @@ $('form').on 'click', ->
 $('.save').on 'click', ->
 	Workout.list.forEach (w)-> w.update()
 	window.close Workout.list.listToJSON()
+
+#### Template boilerplating
+$root = $('form')
+$tpl_exercise = $('#template_exercise')
+$tpl_exercise.remove()
+$tpl_workout = $('#template_workout')
+$tpl_workout.remove()
+
+#### Restoring previous state
+Workout.restore window.data
