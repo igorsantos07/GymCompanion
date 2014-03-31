@@ -10,3 +10,5 @@ desk-install:
 	pebble install --logs --phone 192.168.0.14
 bth-install:
 	pebble install --logs --pebble_id 00:17:EC:51:A0:E5
+deploy:
+	scp build/src/js/complete.html root@direct.igorsantos.com.br:/var/www/gymcompanion.html
