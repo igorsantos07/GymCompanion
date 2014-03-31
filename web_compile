@@ -9,7 +9,7 @@ print   "================================"
 dev_null = open('/dev/null', 'w')
 def minify(file):
 	print "  > Minifying "+file.rpartition('/')[2]
-	#check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
+	check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
 
 # root     = os.path.dirname(os.path.abspath(__file__))+'/'
 root     = ''
@@ -31,6 +31,8 @@ print "==> Shortening CSS's"
 check_call(node+'lessc '+root_js+'/less/styles.less '+css, shell=True)
 print "  > Removing unused rules"
 check_call(node+'uncss -s ../../'+css+' '+html+' > '+css+'.tmp && mv '+css+'.tmp '+css, shell=True)
+print "  > Prefixing needed rules"
+check_call(node+'autoprefixer -b "last 2 iOS versions, Android 4.1" -o '+css+'.tmp '+css+' && mv '+css+'.tmp '+css, shell=True)
 minify(css)
 
 # Merges CSS and JS into the HTML file
