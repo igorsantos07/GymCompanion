@@ -14,9 +14,10 @@
 
         <form class="uk-form uk-form-stacked">
             <div class="buttons">
-                <button class="big" id="newWorkout"><i></i> Add new Workout</button>
+                <button class="big newWorkout"><i></i> Add new Workout</button>
                 <button class="big save"><i></i> Done</button>
             </div>
+            <div class="buttons"></div><!-- fake div just to force a CSS rule to not vanish with unCSS -->
 
             <fieldset id="template_workout">
                 <h2>Workout <em>A</em></h2>
@@ -25,9 +26,8 @@
                 <span>Unsaved</span>
 
                 <div>
-                    <label for="interval">Interval between exercises:</label>
+                    <label for="interval">Seconds between exercises:</label>
                     <input type="number" name="workout_interval" min="0" max="999"/>
-                    <span>in seconds</span>
                 </div>
 
                 <fieldset id="template_Exercise">
@@ -56,7 +56,7 @@
             </fieldset>
 
             <div class="buttons">
-                <button class="big" id="newWorkout"><i></i> Add new Workout</button>
+                <button class="big newWorkout"><i></i> Add new Workout</button>
                 <button class="big save"><i></i> Done</button>
             </div>
         </form>

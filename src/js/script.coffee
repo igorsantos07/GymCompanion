@@ -8,18 +8,19 @@ $body= $('body')
 
 ##################### Global functions, objects and stuff ######################
 
+#### Don't change those, they're changed on runtime by pebble-integration script
 window.isPebble = false
 window.isPebble = true if window.location.hash.indexOf('pebble') >= 0
 window.data = "{}"
 
 window.close = (data)->
-	console.log "Got this to submit: #{data}"
+	console.log "Got this: #{data}"
 	url = "pebblejs://close##{encodeURIComponent(data)}"
 	if window.isPebble
 		window.location = url
 	else
-		console.log "Should go to #{url}"
-		localStorage.setItem 'data', data
+#		console.log "Should go to #{url}"
+		localStorage.data = data
 		console.log "Data saved to localStorage, since you're not on the Pebble app"
 
 window.scrollToElement = ($element, callback)->
@@ -44,13 +45,21 @@ if window.isPebble
 		$flash.fill msg
 		$flash.set '$opacity', 1
 
-Array.prototype.toJSON = ->
-	json = @map (e)-> if e.toJSON? then e.toJSON() else JSON.stringify(e)
+Array.prototype.listToJSON = ->
+	json = @map (e)->
+		if e.toJSON?			then e.toJSON()
+		else if e.listToJSON?	then e.listToJSON()
+		else					     JSON.stringify(e)
 	"[#{json.join()}]"
+
+if !Array.isArray
+	Array.isArray = (stuff)-> Object.prototype.toString.call(stuff) == '[object Array]'
 
 ############################## Classes definition ##############################
 
 class Exercise
+	@properties: ['id','name','sets','reps','weight','interval']
+
 	constructor: (@name, @sets, @reps, @weight, @interval, @id = NaN) ->
 
 	setRoot: (@root) ->
@@ -62,22 +71,22 @@ class Exercise
 			@[e.name] = (if e.type == 'number' then parseInt(e.value) else e.value) || undefined
 
 	toJSON: ->
-		data = {}
-		@getSecureProperties().forEach (prop)=> data[prop] = @[prop]
-		JSON.stringify data
+		JSON.stringify @getSecureValues()
 
 	@fromJSON: (json)->
 		new Exercise(json.name, json.sets, json.reps, json.weight, json.interval, json.id)
 
-	getSecureProperties: ->
-		['id','name','sets','reps','weight','interval']
+	getSecureValues: ->
+		values = {}
+		Exercise.properties.forEach (prop)=> values[prop] = @[prop]
+		values
 
 	toString: -> @toJSON()
 
 class Workout
 	@letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 	@list: []
-	exercises = undefined;
+	exercises: undefined
 
 	constructor: (animated = true, @interval, exercises = []) ->
 		@root = $tpl_workout.clone()
@@ -113,12 +122,13 @@ class Workout
 			window.scrollToElement root, -> $('input', root)[0].focus()
 
 	update: ->
-		@interval = parseInt $('[name=workout_interval]', @root).get('@value')
+		@interval = parseInt $('[name=workout_interval]', @root).get('value')
+		@exercises.forEach (e)-> e.update()
 
 	toJSON: ->
 		JSON.stringify
 			interval: @interval
-			exercises: JSON.parse @exercises.toJSON()
+			exercises: JSON.parse @exercises.listToJSON()
 
 	@fromJSON: (json)->
 		data = JSON.parse json
@@ -134,7 +144,7 @@ class Workout
 if isPebble
 	window.data = JSON.parse window.data
 else
-	window.data = JSON.parse(localStorage.getItem('data') || '{}')
+	window.data = JSON.parse(localStorage.data || '{}')
 
 $root = $('form')
 $tpl_exercise = $('#template_exercise')
@@ -142,7 +152,7 @@ $tpl_exercise.remove()
 $tpl_workout = $('#template_workout')
 $tpl_workout.remove()
 
-$('#newWorkout').on 'click', ->
+$('.newWorkout').on 'click', ->
 	new Workout
 
 $('form').on 'click', ->
@@ -151,5 +161,5 @@ $('form').on 'click', ->
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
 $('.save').on 'click', ->
-	Workout.list.forEach (w)-> w.exercises.forEach (e)-> e.update()
-	window.close Workout.list.toJSON()
+	Workout.list.forEach (w)-> w.update()
+	window.close Workout.list.listToJSON()

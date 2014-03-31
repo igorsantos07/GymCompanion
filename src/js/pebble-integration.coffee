@@ -5,7 +5,7 @@ Pebble.addEventListener 'ready', (e) ->
 	return true
 
 Pebble.addEventListener 'showConfiguration', (e) ->
-	data = localStorage.getItem('data') || "{}"
+	data = localStorage.data || "{}"
 	console.log "Got this from the local storage: #{data}"
 	data = data.replace(/\\/g, '\\\\').replace(/"/g, "\\\"")
 	window.config_html = window.config_html.replace 'window.data = "{}"', "window.data = \"#{data}\""

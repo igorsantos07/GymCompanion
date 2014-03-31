@@ -96,11 +96,15 @@ button {
 .buttons {
     height: @big-button-height;
 
+    & + & { //hiding the second line of buttons if there's nothing between them
+        display: none;
+    }
+
     &:last-child {
         margin-top: 15px;
     }
 
-    #newWorkout {
+    .newWorkout {
         width: 66%;
         float: left;
         + .save {
@@ -183,7 +187,6 @@ fieldset {
         text-align: right;
     }
     input {
-        -webkit-transition: all linear 0.2s;
         transition: all linear 0.2s;
     }
     input[type=number] {
