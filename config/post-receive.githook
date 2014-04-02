@@ -3,6 +3,4 @@ mkdir -p /tmp/gymcompanion
 GIT_WORK_TREE=/tmp/gymcompanion git checkout -f
 
 cd /tmp/gymcompanion
-npm install
-./web_compile
-cp build/src/js/complete.html /var/www/gymcompanion/index.html
+make deploy

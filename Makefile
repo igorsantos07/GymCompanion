@@ -11,4 +11,9 @@ desk-install:
 bth-install:
 	pebble install --logs --pebble_id 00:17:EC:51:A0:E5
 deploy:
-	scp build/src/js/complete.html root@direct.igorsantos.com.br:/var/www/gymcompanion.html
+	npm install
+	./web_compile
+	cp build/src/js/complete.html /var/www/gymcompanion/index.html
+	cp config/post-receive.githook /root/projects/gymcompanion.git/hooks/post-receive
+	cp config/gymcompanion.host /etc/apache2/sites-available/gymcompanion.conf
+	service apache2 reload
