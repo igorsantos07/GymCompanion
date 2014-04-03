@@ -6,6 +6,61 @@ EE   = MINI.EE
 HTML = MINI.HTML
 $body= $('body')
 
+
+############################# Internationalization #############################
+
+i18n =
+	skippedTags: ['SCRIPT', 'EM']
+	user: navigator.language.split('-')[0]
+	source: 'en'
+	en: [
+		'GymCompanion - Workout buddy'
+		'GymCompanion'
+		' Add new Workout'
+		' Done'
+		'Workout '
+		'Unsaved'
+		'Seconds between exercises:'
+		'Sets:'
+		'Reps:'
+		'Weight:'
+		'Interval:'
+		' New Exercise'
+	]
+	pt: [
+		'GymCompanion - Parceiro de academia'
+		'GymCompanion'
+		' Criar nova Série'
+		' Feito'
+		'Série '
+		'Não salvo'
+		'Segundos entre os exercícios:'
+		'Séries:'
+		'Reps.:'
+		'Peso:'
+		'A cada:'
+		' Novo exercício'
+	]
+	translate: (e)->
+		for node in e.childNodes
+			if node.nodeType == 1 && @skippedTags.indexOf(node.nodeName) == -1
+				@translate node
+			else if node.nodeType == 3 # TEXT_TYPE
+				error = false
+				if (index = @[@source].indexOf(node.nodeValue)) != -1
+					if @[@user][index]?
+						node.nodeValue = @[@user][index]
+					else
+						error = 'NOT IN USERLANG'
+				else if !/^\s*$/.test(node.nodeValue)
+					error = 'NOT IN SOURCELANG'
+
+				if typeof error == 'string'
+					console.log "#{error}: <#{node.parentNode.nodeName}> '#{node.nodeValue}'"
+
+i18n.translate $$('head title')
+i18n.translate $$('body')
+
 ##################### Global functions, objects and stuff ######################
 
 #### Don't change those, they're changed on runtime by pebble-integration script
