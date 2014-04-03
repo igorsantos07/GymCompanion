@@ -42,6 +42,7 @@ i18n =
 		' Novo exercício'
 	]
 	translate: (e)->
+		if @user == @source then return
 		for node in e.childNodes
 			if node.nodeType == 1 && @skippedTags.indexOf(node.nodeName) == -1
 				@translate node
