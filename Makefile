@@ -14,6 +14,7 @@ deploy:
 	npm install
 	./web_compile
 	cp build/src/js/complete.html /var/www/gymcompanion/index.html
+	cp src/js/favicon* /var/www/gymcompanion/
 	cp config/post-receive.githook /root/projects/gymcompanion.git/hooks/post-receive
 	cp config/gymcompanion.host /etc/apache2/sites-available/gymcompanion.conf
 	service apache2 reload
