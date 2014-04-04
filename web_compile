@@ -26,6 +26,7 @@ final_path = build_js+'complete.html'
 # Compiling CoffeeScript and Less
 print "==> Brewing CoffeeScripts"
 check_call(node+'coffee --no-header -bc -o '+build_js+' '+root_js, shell=True)
+check_call('cp '+root_js+'libs/bugsense.min.js '+build_js+'bugsense.min.js', shell=True)
 minify(js)
 print "==> Shortening CSS's"
 check_call(node+'lessc '+root_js+'/less/styles.less '+css, shell=True)
