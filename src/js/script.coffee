@@ -10,12 +10,12 @@ $body= $('body')
 ############################# Internationalization #############################
 
 i18n =
-	skippedTags: ['SCRIPT', 'EM']
+	skipTags: ['SCRIPT', 'EM']
+	skipWords: ['GymCompanion', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
 	en: [
 		'GymCompanion - Workout buddy'
-		'GymCompanion'
 		' Add new Workout'
 		' Done'
 		'Workout '
@@ -27,13 +27,12 @@ i18n =
 		'Interval:'
 		' New Exercise',
 		'Donations',
-		'Issues/Suggestions',
+		'Ideas',
 		'Source code',
 		'Contact me'
 	]
 	pt: [
 		'GymCompanion - Parceiro de academia'
-		'GymCompanion'
 		' Criar nova Série'
 		' Feito'
 		'Série '
@@ -45,16 +44,16 @@ i18n =
 		'A cada:'
 		' Novo exercício',
 		'Doações',
-		'Problemas/Sugestões',
+		'Idéias',
 		'Código-fonte',
 		'Contato'
 	]
 	translate: (e)->
 		if @user == @source then return
 		for node in e.childNodes
-			if node.nodeType == 1 && @skippedTags.indexOf(node.nodeName) == -1
+			if node.nodeType == 1 && @skipTags.indexOf(node.nodeName) == -1
 				@translate node
-			else if node.nodeType == 3 # TEXT_TYPE
+			else if node.nodeType == 3 && @skipWords.indexOf(node.nodeValue) == -1
 				error = false
 				if (index = @[@source].indexOf(node.nodeValue)) != -1
 					if @[@user][index]?
@@ -65,7 +64,7 @@ i18n =
 					error = 'NOT IN SOURCELANG'
 
 				if typeof error == 'string'
-					console.log "#{error}: <#{node.parentNode.nodeName}> '#{node.nodeValue}'"
+					console.log "i18n #{error}: <#{node.parentNode.nodeName}> '#{node.nodeValue}'"
 
 i18n.translate $$('head title')
 i18n.translate $$('body')
