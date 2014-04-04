@@ -25,7 +25,11 @@ i18n =
 		'Reps:'
 		'Weight:'
 		'Interval:'
-		' New Exercise'
+		' New Exercise',
+		'Donations',
+		'Issues/Suggestions',
+		'Source code',
+		'Contact me'
 	]
 	pt: [
 		'GymCompanion - Parceiro de academia'
@@ -39,7 +43,11 @@ i18n =
 		'Reps.:'
 		'Peso:'
 		'A cada:'
-		' Novo exercício'
+		' Novo exercício',
+		'Doações',
+		'Problemas/Sugestões',
+		'Código-fonte',
+		'Contato'
 	]
 	translate: (e)->
 		if @user == @source then return
