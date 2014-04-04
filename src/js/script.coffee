@@ -11,7 +11,7 @@ $body= $('body')
 
 i18n =
 	skipTags: ['SCRIPT', 'EM']
-	skipWords: ['GymCompanion', ' :)']
+	skipWords: ['GymCompanion', 'sec', 'kg/lb', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
 	en: [
