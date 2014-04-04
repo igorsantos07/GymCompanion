@@ -195,13 +195,34 @@ fieldset {
     }
     input {
         transition: all linear 0.2s;
-    }
-    input[type=number] {
+        height: 30px;
         width: 70px;
-        &::-webkit-input-placeholder { font-size: 12px; }
+
         &::-moz-placeholder { color: white; }
         &:-moz-placeholder { color: white; }
         &:-ms-input-placeholder { color: white; }
+
+        &.unit {
+            border-right: 0px !important;
+            border-top-right-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+
+            &[name=weight]   { width: 42px; }
+            &[name=interval] { width: 48px; }
+        }
+        & + abbr {
+            padding: 0 4px 0 2px;
+            height: 30px;
+            line-height: 28px;
+            display: inline-block;
+            border: 1px solid @colorSDarker;
+            border-left-width: 0px;
+            border-radius: 0px 5px 5px 0px;
+            background-color: lighten(@colorSMedium, 10%);
+            color: @colorSLighter;
+            font-size: 75%;
+            font-style: italic;
+        }
     }
     input + input {
         margin-left: 20px;

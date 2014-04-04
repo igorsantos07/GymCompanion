@@ -7,7 +7,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <style>
             /* HERE BE CSS */
         </style>
@@ -34,7 +34,8 @@
 
                 <div>
                     <label for="interval">Seconds between exercises:</label>
-                    <input type="number" name="workout_interval" min="0" max="999"/>
+                    <input type="number" class="unit" name="workout_interval" min="0" max="999"/>
+                    <abbr>sec</abbr>
                 </div>
 
                 <fieldset id="template_Exercise">
@@ -50,11 +51,13 @@
                         </div>
                         <div>
                             <label for="weight">Weight:</label>
-                            <input type="number" name="weight" min="0" max="999"/>
+                            <input type="number" class="unit" name="weight" min="0" max="999"/>
+                            <abbr>kg/lb</abbr>
                         </div>
                         <div>
                             <label for="interval">Interval:</label>
-                            <input type="number" name="interval" min="0" max="999"/>
+                            <input type="number" class="unit" name="interval" min="0" max="999"/>
+                            <abbr>sec</abbr>
                         </div>
                     </div>
                 </fieldset>
