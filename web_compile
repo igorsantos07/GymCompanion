@@ -22,6 +22,13 @@ libs       = [root_js+'libs/minified.js']
 js         = build_js+'script.js'
 css        = build_js+'styles.css'
 final_path = build_js+'complete.html'
+uncss_ignore = ','.join([
+    '.buttons .newWorkout:disabled',
+    '.buttons .newWorkout:disabled .add',
+    '.buttons .newWorkout:disabled .noAdd',
+    '.buttons .newWorkout .add',
+    '.buttons .newWorkout .noAdd',
+])
 
 # Compiling CoffeeScript and Less
 print "==> Brewing CoffeeScripts"
@@ -31,7 +38,7 @@ minify(js)
 print "==> Shortening CSS's"
 check_call(node+'lessc '+root_js+'/less/styles.less '+css, shell=True)
 print "  > Removing unused rules"
-check_call(node+'uncss -s ../../'+css+' '+html+' > '+css+'.tmp && mv '+css+'.tmp '+css, shell=True)
+check_call(node+'uncss -i "'+uncss_ignore+'" -s ../../'+css+' '+html+' > '+css+'.tmp && mv '+css+'.tmp '+css, shell=True)
 print "  > Prefixing needed rules"
 check_call(node+'autoprefixer -b "last 2 iOS versions, Android 4.1" -o '+css+'.tmp '+css+' && mv '+css+'.tmp '+css, shell=True)
 minify(css)

@@ -21,6 +21,7 @@ i18n =
 	en: [
 		'GymCompanion - Workout buddy'
 		' Add new Workout'
+		'You have up to 7 workouts'
 		' Done'
 		'Workout '
 		'Unsaved'
@@ -38,6 +39,7 @@ i18n =
 	pt: [
 		'GymCompanion - Parceiro de academia'
 		' Criar nova Série'
+		'Você tem até 7 séries'
 		' Feito'
 		'Série '
 		'Não salvo'
@@ -158,6 +160,11 @@ class Workout
 	exercises: undefined
 
 	constructor: (animated = true, @interval, exercises = []) ->
+		if Workout.list.length == Workout.letters.length-1
+			$('.newWorkout').set disabled: true
+		else if Workout.list.length >= Workout.letters.length
+			return false
+
 		@root = $tpl_workout.clone()
 		workout_id = Workout.list.length
 		$('h2 em', @root).fill Workout.letters[workout_id]

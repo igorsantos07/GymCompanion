@@ -115,6 +115,15 @@ button {
     .newWorkout {
         width: 66%;
         float: left;
+        &:disabled {
+            &:extend(.uk-button:disabled);
+            cursor: default !important;
+            background-image: linear-gradient(to bottom, greyscale(#9fd256), greyscale(#6fac34));
+            .noAdd { display: inline-block; }
+            .add { display: none; }
+        }
+        .noAdd { display: none; }
+        .add { display: inline-block; }
         + .save {
             width: 33%;
             float: right;
