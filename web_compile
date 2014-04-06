@@ -23,6 +23,7 @@ js         = build_js+'script.js'
 css        = build_js+'styles.css'
 final_path = build_js+'complete.html'
 uncss_ignore = ','.join([
+    '.buttons + .buttons',
     '.buttons .newWorkout:disabled',
     '.buttons .newWorkout:disabled .add',
     '.buttons .newWorkout:disabled .noAdd',
