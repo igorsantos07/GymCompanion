@@ -14,6 +14,10 @@ i18n =
 	skipWords: ['GymCompanion', 'sec', 'kg/lb', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
+	Exception: (@tag, @string, @missingAt)->
+		@name = 'i18nException'
+		@toString = -> "#{@name}: Missing translation for #{@missingAt} lang: <#{@tag}> '#{@string}'"
+		this
 	en: [
 		'GymCompanion - Workout buddy'
 		' Add new Workout'
@@ -59,12 +63,12 @@ i18n =
 					if @[@user][index]?
 						node.nodeValue = @[@user][index]
 					else
-						error = 'NOT IN USERLANG'
+						error = 'user'
 				else if !/^\s*$/.test(node.nodeValue)
-					error = 'NOT IN SOURCELANG'
+					error = 'source'
 
 				if typeof error == 'string'
-					console.log "i18n #{error}: <#{node.parentNode.nodeName}> '#{node.nodeValue}'"
+					console.error new i18n.Exception node.parentNode.nodeName, node.nodeValue, error
 
 i18n.translate $$('head title')
 i18n.translate $$('body')
