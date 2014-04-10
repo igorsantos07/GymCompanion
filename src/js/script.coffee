@@ -233,6 +233,11 @@ class Workout
 
 ################################# Events and interactions #################################
 
+$(window).on 'scroll', (->
+	floatHeader = $('header.main').toggle 'floating'
+	-> floatHeader($body.get('scrollTop') > 35) # partially hidden top buttons
+)()
+
 $('.newWorkout').on 'click', ->
 	new Workout
 

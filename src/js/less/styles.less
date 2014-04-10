@@ -38,19 +38,47 @@ body {
 }
 
 header {
-    .uk-navbar;
-    height: 65px;
-    box-shadow: 0px 0px 20px 5px #555;
+	height: 65px;
 
-    h1 {
-        background: data-uri("image/png;base64", "../img/logo.png") no-repeat 5px 5px;
-        padding-left: 60px;
-        width: 310px;
-        margin: 0px auto;
-        font-size: 32px;
-        font-weight: bold;
-        line-height: 60px;
-    }
+	&.main {
+		.uk-navbar;
+		box-shadow: 0px 0px 20px 5px #555;
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		z-index: 5;
+
+		h1 {
+			background: data-uri("image/png;base64", "../img/logo.png") no-repeat 5px 5px;
+			padding-left: 60px;
+			width: 310px;
+			margin: 0px auto;
+			font-size: 32px;
+			font-weight: bold;
+			line-height: 60px;
+		}
+
+		nav {
+			display: none;
+		}
+
+		&.floating {
+			h1 {
+				font-size: 28px;
+				margin: 0px 1%;
+				display: inline-block;
+				width: 30%;
+				min-width: 280px;
+			}
+			nav {
+				display: inline-block;
+				min-width: 180px;
+			}
+		}
+	}
+	&.placeholder {
+		display: block;
+	}
 }
 
 @footer-height: 30px;
@@ -165,7 +193,7 @@ fieldset {
             margin-left: 20px;
         }
     }
-    > span {
+    span.badge {
         .uk-badge;
         .uk-panel-badge;
         .uk-badge-warning;
