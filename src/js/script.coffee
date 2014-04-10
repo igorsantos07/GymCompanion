@@ -126,6 +126,9 @@ Array.prototype.listToJSON = ->
 if !Array.isArray
 	Array.isArray = (stuff)-> Object.prototype.toString.call(stuff) == '[object Array]'
 
+Array.isNonEmptyArray = (stuff)->
+	Array.isArray(stuff) && stuff.length > 0
+
 ############################## Classes definition ##############################
 
 class Exercise
@@ -208,7 +211,8 @@ class Workout
 
 	@rehydrate: (pojo)->
 		exercises = []
-		pojo.exercises.forEach (e)-> exercises.push Exercise.fromJSON(e)
+		if Array.isNonEmptyArray pojo.exercises
+			pojo.exercises.forEach (e)-> exercises.push Exercise.fromJSON(e)
 		new Workout(false, pojo.interval, exercises)
 
 	@fromJSON: (json)->
@@ -216,7 +220,7 @@ class Workout
 
 	@restore: (json)->
 		data = JSON.parse json
-		if Array.isArray data
+		if Array.isNonEmptyArray data
 			workouts = []
 			data.forEach (single_data)-> workouts.push Workout.rehydrate(single_data)
 			return workouts
@@ -226,13 +230,13 @@ class Workout
 	toString: -> @toJSON()
 
 
-################################# Working code #################################
+################################# Events and interactions #################################
 
 $('.newWorkout').on 'click', ->
 	new Workout
 
 $('form').on 'click', ->
-	workout_id = $(this).get('%workout')
+	workout_id = this.get '%workout'
 	Workout.list[workout_id].addExercise()
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
@@ -240,7 +244,9 @@ $('.save').on 'click', ->
 	Workout.list.forEach (w)-> w.update()
 	window.close Workout.list.listToJSON()
 
-#### Template boilerplating
+	
+################################## Template boilerplating ##################################
+
 $root = $('form')
 $tpl_exercise = $('#template_exercise')
 $tpl_exercise.remove()
