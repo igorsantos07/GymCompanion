@@ -203,6 +203,7 @@ class Workout
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('value')
 		@exercises.forEach (e)-> e.update()
+		$('.badge', @root).set $display: 'none'
 
 	toJSON: ->
 		JSON.stringify
