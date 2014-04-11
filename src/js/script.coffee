@@ -5,13 +5,14 @@ $$   = MINI.$$
 EE   = MINI.EE
 HTML = MINI.HTML
 $body= $('body')
+$workoutJumper = $('nav select')
 
 
 ############################# Internationalization #############################
 
 i18n =
 	skipTags: ['SCRIPT', 'EM']
-	skipWords: ['GymCompanion', 'sec', 'kg/lb', ' :)']
+	skipWords: ['Gym', 'Companion', 'sec', 'kg/lb', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
 	Exception: (@tag, @string, @missingAt)->
@@ -20,6 +21,7 @@ i18n =
 		this
 	en: [
 		'GymCompanion - Workout buddy'
+		'Jump to...'
 		' Add new Workout'
 		'You have up to 7 workouts'
 		' Done'
@@ -38,6 +40,7 @@ i18n =
 	]
 	pt: [
 		'GymCompanion - Parceiro de academia'
+		'Ir para...'
 		' Criar nova Série'
 		'Você tem até 7 séries'
 		' Feito'
@@ -93,14 +96,15 @@ window.close = (data)->
 		console.log "Data saved to localStorage, since you're not on the Pebble app"
 
 window.scrollToElement = ($element, callback)->
-	windowTop  = $body.get 'scrollTop'
-	topDiff    = $element[0].getBoundingClientRect().top - 15
-	color      = $element.get '$background-color'
-	altColor   = '#BBB'
-	blinkTime  = 350
-	scrollTime = if topDiff != 0 then 500 else 0
+	windowTop    = $body.get 'scrollTop'
+	topDiff      = $element[0].getBoundingClientRect().top - 15
+	headerHeight = $('header')[0].getBoundingClientRect().height
+	color        = $element.get '$background-color'
+	altColor     = '#BBB'
+	blinkTime    = 350
+	scrollTime   = if topDiff != 0 then 500 else 0
 
-	$body.animate { scrollTop: windowTop + topDiff }, scrollTime
+	$body.animate { scrollTop: windowTop + topDiff - headerHeight }, scrollTime
 	.then -> callback?()
 	.then =>
 		$element.animate({'$background-color': altColor}, blinkTime)
@@ -168,9 +172,11 @@ class Workout
 		else if Workout.list.length >= Workout.letters.length
 			return false
 
-		@root = $tpl_workout.clone()
+		@root      = $tpl_workout.clone()
 		workout_id = Workout.list.length
-		$('h2 em', @root).fill Workout.letters[workout_id]
+		letter     = Workout.letters[workout_id]
+		@root.set '@id', "workout_#{workout_id}"
+		$('h2 em', @root).fill letter
 		$('[name=workout_interval]', @root).set '@value', @interval
 		$('.newExercise', @root).set '%workout', workout_id
 		Workout.list.push @
@@ -182,6 +188,8 @@ class Workout
 			.then => @root.set '$height', 'auto'
 			window.scrollToElement @root, => $('input', @root)[0]?.focus()
 			# purposely out of the then(), scrolling while the element appears
+
+		$workoutJumper.add EE('option', {'@value': workout_id}, "Workout #{letter}")
 
 		@exercises = []
 		exercises.forEach (e)=> @addExercise(false, e)
@@ -238,6 +246,10 @@ $(window).on 'scroll', (->
 	-> floatHeader($body.get('scrollTop') > 35) # partially hidden top buttons
 )()
 
+$workoutJumper.on 'change', ->
+	window.scrollToElement $("#workout_#{@[0].value}")
+	console.log "Should go to #{@[0].value}" # TODO: report that this.get('@value') does not work for selects
+
 $('.newWorkout').on 'click', ->
 	new Workout
 
@@ -250,7 +262,7 @@ $('.save').on 'click', ->
 	Workout.list.forEach (w)-> w.update()
 	window.close Workout.list.listToJSON()
 
-	
+
 ################################## Template boilerplating ##################################
 
 $root = $('form')

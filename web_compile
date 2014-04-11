@@ -24,7 +24,10 @@ css        = build_js+'styles.css'
 final_path = build_js+'complete.html'
 uncss_ignore = ','.join([
 	'header.main.floating h1',
+	'header.main.floating h1 br',
 	'header.main.floating nav',
+	'header.main.floating nav select',
+	'header.main.floating nav button',
     '.buttons + .buttons',
     '.buttons .newWorkout:disabled',
     '.buttons .newWorkout:disabled .add',

@@ -56,6 +56,7 @@ header {
 			font-size: 32px;
 			font-weight: bold;
 			line-height: 60px;
+			br { display: none; }
 		}
 
 		nav {
@@ -63,16 +64,39 @@ header {
 		}
 
 		&.floating {
+			height: 70px;
 			h1 {
-				font-size: 28px;
+				@padding: 4px;
+
+				font-size: 24px;
+				line-height: 22px;
 				margin: 0px 1%;
 				display: inline-block;
 				width: 30%;
-				min-width: 280px;
+				min-width: 200px;
+				padding-top: @padding;
+				padding-bottom: @padding;
+				background-position-y: 0;
+				/** Hack sem paciencia pra posicionar direoto */
+				position: relative;
+				top: -4px;
+				/* fim hack **/
+
+				br { display: inline; }
 			}
 			nav {
 				display: inline-block;
-				min-width: 180px;
+				width: 160px;
+				select {
+					display: block;
+					margin: 2px auto;
+					color: black;
+				}
+				button {
+					margin: 5px 2px 2px 5px;
+					width: 70px;
+					height: 30px;
+				}
 			}
 		}
 	}
@@ -102,17 +126,6 @@ footer {
     }
 }
 
-form {
-    display: block;
-    margin: @content-margin @content-margin/2;
-    padding-bottom: @content-margin + @footer-height;
-    margin-bottom: 0px;
-
-    > .save:last-child {
-        margin-top: 15px;
-    }
-}
-
 @big-button-height: 50px;
 button {
     .uk-button;
@@ -130,8 +143,6 @@ button {
 }
 
 .buttons {
-    height: @big-button-height;
-
     & + & { //hiding the second line of buttons if there's nothing between them
         display: none;
     }
@@ -141,8 +152,6 @@ button {
     }
 
     .newWorkout {
-        width: 66%;
-        float: left;
         &:disabled {
             &:extend(.uk-button:disabled);
             cursor: default !important;
@@ -152,11 +161,31 @@ button {
         }
         .noAdd { display: none; }
         .add { display: inline-block; }
-        + .save {
-            width: 33%;
-            float: right;
-        }
     }
+}
+
+form {
+    display: block;
+    margin: @content-margin @content-margin/2;
+    padding-bottom: @content-margin + @footer-height;
+    margin-bottom: 0px;
+
+    > .save:last-child {
+        margin-top: 15px;
+    }
+
+	.buttons {
+		height: @big-button-height;
+		.newWorkout {
+			width: 66%;
+			float: left;
+
+			+ .save {
+				width: 33%;
+				float: right;
+			}
+		}
+	}
 }
 
 .button-icon(@name, @size) {
