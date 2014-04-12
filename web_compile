@@ -28,6 +28,8 @@ uncss_ignore = ','.join([
 	'header.main.floating nav',
 	'header.main.floating nav select',
 	'header.main.floating nav button',
+	'header.main.floating nav button.newWorkout',
+	'header.main.floating nav button i',
     '.buttons + .buttons',
     '.buttons .newWorkout:disabled',
     '.buttons .newWorkout:disabled .add',

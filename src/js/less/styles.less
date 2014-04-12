@@ -60,7 +60,9 @@ header {
 		}
 
 		nav {
-			display: none;
+			visibility: hidden;
+			opacity: 0;
+			transition: opacity 0.1s;
 		}
 
 		&.floating {
@@ -87,15 +89,25 @@ header {
 			nav {
 				display: inline-block;
 				width: 160px;
+				text-align: center;
+				visibility: visible;
+				opacity: 1;
+				transition: opacity 0.4s;
 				select {
 					display: block;
 					margin: 2px auto;
 					color: black;
 				}
 				button {
-					margin: 5px 2px 2px 5px;
-					width: 70px;
+					margin: 5px 3px 2px 3px;
+					width: 40px;
 					height: 30px;
+					i {
+						margin: 0 auto;
+					}
+					&.newWorkout {
+						background-image: linear-gradient(to bottom, #888, #444);
+					}
 				}
 			}
 		}
@@ -194,9 +206,13 @@ form {
     height: @size;
     margin-right: @size/4;
 }
-#newWorkout i  { .button-icon('add', 22px); }
+.newWorkout i  { .button-icon('add', 22px); }
 .newExercise i { .button-icon('add', 16px); }
 .save i        { .button-icon('done', 22px); }
+.small {
+	.newWorkout i  { .button-icon('add', 16px); }
+	.save i        { .button-icon('done', 16px); }
+}
 
 fieldset {
     .uk-panel;
