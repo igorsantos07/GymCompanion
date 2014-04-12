@@ -3,13 +3,19 @@ import os
 from sys import exit
 from subprocess import check_call
 
-print "\nStarting Web compilation process"
-print   "================================"
+ENV    = os.getenv('ENV', 'dev')
+DEV    = "dev" in ENV
+PROD   = "prod" in ENV
+PEBBLE = "pebble" in ENV
+
+print "\nWeb "+ENV+" compilation process"
+print   "==================================="
 
 dev_null = open('/dev/null', 'w')
 def minify(file):
-	print "  > Minifying "+file.rpartition('/')[2]
-#	check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
+	if not DEV:
+		print "  > Minifying "+file.rpartition('/')[2]
+		check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
 
 # root     = os.path.dirname(os.path.abspath(__file__))+'/'
 root     = ''
@@ -81,6 +87,6 @@ minify(pebblekit_path)
 final_size = os.path.getsize(pebblekit_path)
 print "  > Final file size: %.2fKb" % (final_size / 1024.0)
 
-print "================================"
+print "==================================="
 print "====> Web compilation done, sir!\n"
 exit(0)

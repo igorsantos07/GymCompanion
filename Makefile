@@ -12,7 +12,7 @@ bth-install:
 	pebble install --logs --pebble_id 00:17:EC:51:A0:E5
 deploy:
 	npm install
-	./web_compile
+	ENV=prod ./web_compile
 	cp build/src/js/complete.html /var/www/gymcompanion/index.html
 	cp src/js/favicon* /var/www/gymcompanion/
 	cp src/js/libs/bugsense.min.js /var/www/gymcompanion/bugsense.min.js
