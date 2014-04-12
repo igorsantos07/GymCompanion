@@ -247,8 +247,7 @@ $(window).on 'scroll', (->
 )()
 
 $workoutJumper.on 'change', ->
-	window.scrollToElement $("#workout_#{@[0].value}")
-	console.log "Should go to #{@[0].value}" # TODO: report that this.get('@value') does not work for selects
+	window.scrollToElement $("#workout_#{@[0].value}") # TODO: bug report about .get('@value') at https://github.com/timjansen/minified.js/issues/37
 
 $('.newWorkout').on 'click', ->
 	new Workout
