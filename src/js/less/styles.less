@@ -129,12 +129,16 @@ footer {
     line-height: @footer-height;
     text-align: center;
 
-    ul li {
-        display: inline-block;
-        + li:before {
-            content: '||';
-            padding: 5px;
-        }
+    ul {
+		padding: 0;
+		margin: 0;
+		li {
+			display: inline-block;
+			+ li:before {
+				content: '||';
+				padding: 5px;
+			}
+		}
     }
 }
 
@@ -219,9 +223,11 @@ fieldset {
     .uk-panel-box;
     .uk-panel-box-primary;
     margin-bottom: 0px;
+	margin-top: 10px;
 
     > h2 {
         .uk-panel-title;
+		margin-bottom: 10px;
         display: inline-block;
         em {
             .uk-badge;
@@ -255,7 +261,7 @@ fieldset {
     // Those div styles where copied from .uk-form-row, to simplify markup
     div {
         & {
-            margin-top: 15px;
+            margin-top: 10px;
         }
         &:before, &:after {
             content: " ";
