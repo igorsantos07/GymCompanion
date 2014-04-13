@@ -10,14 +10,21 @@ $workoutJumper = $('nav select')
 
 ############################# Internationalization #############################
 
+throwError = (exception)->
+	if Bugsense?.config.apiKey?
+		Bugsense.notify exception
+	else
+		console.error "Uncaught #{exception.name}: #{exception.message}"
+
 i18n =
 	skipTags: ['SCRIPT', 'EM']
 	skipWords: ['Gym', 'Companion', 'sec', 'kg/lb', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
 	Exception: (@tag, @string, @missingAt)->
-		@name = 'i18nException'
-		@toString = -> "#{@name}: Missing translation for #{@missingAt} lang: <#{@tag}> '#{@string}'"
+		@name     = 'i18nException'
+		@toString = -> "Missing translation for #{@missingAt} lang: <#{@tag}> '#{@string}'"
+		@message  = @toString()
 		this
 	en: [
 		'GymCompanion - Workout buddy'
@@ -73,7 +80,7 @@ i18n =
 					error = 'source'
 
 				if typeof error == 'string'
-					console.error new i18n.Exception node.parentNode.nodeName, node.nodeValue, error
+						throwError new i18n.Exception node.parentNode.nodeName, node.nodeValue, error
 
 i18n.translate $$('head title')
 i18n.translate $$('body')
@@ -247,7 +254,7 @@ $(window).on 'scroll', (->
 )()
 
 $workoutJumper.on 'change', ->
-	window.scrollToElement $("#workout_#{@[0].value}") # TODO: bug report about .get('@value') at https://github.com/timjansen/minified.js/issues/37
+	window.scrollToElement $("#workout_#{@get('value')}")
 
 $('.newWorkout').on 'click', ->
 	new Workout
