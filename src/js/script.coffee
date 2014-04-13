@@ -153,6 +153,7 @@ class Exercise
 	update: ->
 		$('input', @root).each (e) =>
 			@[e.name] = (if e.type == 'number' then parseInt(e.value) else e.value) || undefined
+			e.changed = false
 
 	toJSON: ->
 		JSON.stringify @getSecureValues()
@@ -171,6 +172,8 @@ class Workout
 	@letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 	@list: []
 	exercises: undefined
+	id: -1
+	dirty: true
 
 	constructor: (animated = true, @interval, exercises = []) ->
 		if Workout.list.length == Workout.letters.length-1
@@ -178,13 +181,13 @@ class Workout
 		else if Workout.list.length >= Workout.letters.length
 			return false
 
-		@root      = $tpl_workout.clone()
-		workout_id = Workout.list.length
-		letter     = Workout.letters[workout_id]
-		@root.set '@id', "workout_#{workout_id}"
+		@root  = $tpl_workout.clone()
+		@id    = Workout.list.length
+		letter = Workout.letters[@id]
+		@root.set '@id': "workout_#{@id}"
 		$('h2 em', @root).fill letter
-		$('[name=workout_interval]', @root).set '@value', @interval
-		$('.newExercise', @root).set workout: workout_id
+		$('[name=workout_interval]', @root).set '@value': @interval, 'workout': @id
+		$('.newExercise', @root).set workout: @id
 		Workout.list.push @
 
 		@root.set '$$slide', 0 if animated
@@ -195,7 +198,7 @@ class Workout
 			window.scrollToElement @root, => $('input', @root)[0]?.focus()
 			# purposely out of the then(), scrolling while the element appears
 
-		$workoutJumper.add EE('option', {'@value': workout_id}, "Workout #{letter}")
+		$workoutJumper.add EE('option', {'@value': @id}, "Workout #{letter}")
 
 		@exercises = []
 		exercises.forEach (e)=> @addExercise(false, e)
@@ -205,6 +208,7 @@ class Workout
 		# TODO: when you find that, please set the default interval to be the one from the workout
 		if !exercise then exercise = new Exercise
 		root = $tpl_exercise.clone()
+		$('input', root).set workout: @id
 		exercise.id = @exercises.length + 1
 		exercise.setRoot root
 		@exercises.push exercise
@@ -215,12 +219,16 @@ class Workout
 		if animated
 			window.scrollToElement root, -> $$('input', root).focus()
 
+	setDirty: (@dirty)->
+		# TODO: the encapsulation strategy used on window.scroll is not working here for some reason
+		$('.badge', @root).set $visibility: (if @dirty then 'visible' else 'hidden')
+
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('value')
 		@exercises.forEach (e)-> e.update()
-		$('.badge', @root).set $display: 'none'
 
 	toJSON: ->
+		@setDirty false
 		JSON.stringify
 			interval: @interval
 			exercises: JSON.parse @exercises.listToJSON()
@@ -238,7 +246,10 @@ class Workout
 		data = JSON.parse json
 		if Array.isNonEmptyArray data
 			workouts = []
-			data.forEach (single_data)-> workouts.push Workout.rehydrate(single_data)
+			data.forEach (single_data)->
+				w = Workout.rehydrate single_data
+				w.setDirty false
+				workouts.push w
 			return workouts
 		else
 			return Workout.rehydrate data
@@ -263,6 +274,12 @@ $('form').on 'click', ->
 	workout_id = this.get 'workout'
 	Workout.list[workout_id].addExercise()
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
+
+$('form').onChange ->
+	if !@get 'changed'
+		@set changed: true
+		Workout.list[@get('workout')].setDirty true
+, 'input'
 
 $('.save').on 'click', ->
 	Workout.list.forEach (w)-> w.update()
