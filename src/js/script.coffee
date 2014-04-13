@@ -93,14 +93,13 @@ window.isPebble = true if window.location.hash.indexOf('pebble') >= 0
 window.data = "{}"
 
 window.close = (data)->
-	console.log "Got this: #{data}"
+	#console.log "Got this: #{data}"
 	url = "pebblejs://close##{encodeURIComponent(data)}"
 	if window.isPebble
 		window.location = url
 	else
-#		console.log "Should go to #{url}"
 		localStorage.data = data
-		console.log "Data saved to localStorage, since you're not on the Pebble app"
+		console.log "#{data.length} bytes of data saved to localStorage, since you're not on the Pebble app"
 
 window.scrollToElement = ($element, callback)->
 	windowTop    = $body.get 'scrollTop'
@@ -185,7 +184,7 @@ class Workout
 		@root.set '@id', "workout_#{workout_id}"
 		$('h2 em', @root).fill letter
 		$('[name=workout_interval]', @root).set '@value', @interval
-		$('.newExercise', @root).set '%workout', workout_id
+		$('.newExercise', @root).set workout: workout_id
 		Workout.list.push @
 
 		@root.set '$$slide', 0 if animated
@@ -202,18 +201,19 @@ class Workout
 		exercises.forEach (e)=> @addExercise(false, e)
 
 	addExercise: (animated = true, exercise = null) ->
+		# TODO: where the heck are the exercise fields filled???
+		# TODO: when you find that, please set the default interval to be the one from the workout
 		if !exercise then exercise = new Exercise
 		root = $tpl_exercise.clone()
 		exercise.id = @exercises.length + 1
 		exercise.setRoot root
 		@exercises.push exercise
 
-		# $('input', root).set 'name', (v) => "#{v}_#{@total_exercises}"
 		root.set '$$slide', 0 if animated
 		$('.newExercise:last-child', @root).addBefore root
 		root.animate {$$slide: 1}, 300 if animated
 		if animated
-			window.scrollToElement root, -> $('input', root)[0].focus()
+			window.scrollToElement root, -> $$('input', root).focus()
 
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('value')
@@ -241,7 +241,7 @@ class Workout
 			data.forEach (single_data)-> workouts.push Workout.rehydrate(single_data)
 			return workouts
 		else
-			return Workout.rehydrate(data)
+			return Workout.rehydrate data
 
 	toString: -> @toJSON()
 
@@ -260,7 +260,7 @@ $('.newWorkout').on 'click', ->
 	new Workout
 
 $('form').on 'click', ->
-	workout_id = this.get '%workout'
+	workout_id = this.get 'workout'
 	Workout.list[workout_id].addExercise()
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
