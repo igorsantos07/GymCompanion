@@ -227,7 +227,7 @@ class Workout
 		$('.newExercise:last-child', @root).addBefore root
 		root.animate {$$slide: 1}, 300 if animated
 		if animated
-			window.scrollToElement root, -> $$('input', root).focus()
+			window.scrollToElement root, -> $('input', root)[0].focus()
 
 	setDirty: (@dirty)->
 		# TODO: the encapsulation strategy used on window.scroll is not working here for some reason
