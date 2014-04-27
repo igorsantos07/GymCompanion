@@ -116,6 +116,13 @@ window.scrollToElement = ($element, callback)->
 		$element.animate({'$background-color': altColor}, blinkTime)
 		.then => $element.animate({'$background-color': color}, blinkTime)
 
+window.configureLabels = (root, id, inputModifier = null)->
+	$('input', root).per (input)->
+		final_id = "#{input.get('name')}_#{id}"
+		input.set '@id': final_id
+		$('label', input.get('parentElement')).set '@for': final_id
+		inputModifier?(input)
+
 if window.isPebble
 	$flash = $('#flash')
 	$flash.on 'click', -> $flash.set '$opacity', 0
@@ -184,11 +191,13 @@ class Workout
 		@root  = $tpl_workout.clone()
 		@id    = Workout.list.length
 		letter = Workout.letters[@id]
+		Workout.list.push @
+
 		@root.set '@id': "workout_#{@id}"
 		$('h2 em', @root).fill letter
 		$('[name=workout_interval]', @root).set '@value': @interval, 'workout': @id
 		$('.newExercise', @root).set workout: @id
-		Workout.list.push @
+		configureLabels(@root, @id)
 
 		@root.set '$$slide', 0 if animated
 		$('.buttons:last-child', $root).addBefore @root
@@ -208,10 +217,10 @@ class Workout
 		# TODO: when you find that, please set the default interval to be the one from the workout
 		if !exercise then exercise = new Exercise
 		root = $tpl_exercise.clone()
-		$('input', root).set workout: @id
 		exercise.id = @exercises.length + 1
 		exercise.setRoot root
 		@exercises.push exercise
+		configureLabels(root, "#{@id}_#{exercise.id}", (input)-> input.set workout: @id)
 
 		root.set '$$slide', 0 if animated
 		$('.newExercise:last-child', @root).addBefore root
