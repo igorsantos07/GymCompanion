@@ -1,6 +1,6 @@
 #!/bin/sh
-mkdir -p /tmp/gymcompanion
-GIT_WORK_TREE=/tmp/gymcompanion git checkout -f
 
-cd /tmp/gymcompanion
+#Initial setup: run git clone <production_repo> /opt/gymcompanion
+cd /opt/gymcompanion
+git pull origin
 make deploy
