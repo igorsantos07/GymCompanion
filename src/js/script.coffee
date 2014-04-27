@@ -133,6 +133,7 @@ if window.isPebble
 else
 	window.data = localStorage.data || '{}'
 
+Array.prototype.each = Array.prototype.forEach
 Array.prototype.listToJSON = ->
 	json = @map (e)->
 		if e.toJSON?			then e.toJSON()
@@ -170,7 +171,7 @@ class Exercise
 
 	getSecureValues: ->
 		values = {}
-		Exercise.properties.forEach (prop)=> values[prop] = @[prop]
+		Exercise.properties.each (prop)=> values[prop] = @[prop]
 		values
 
 	toString: -> @toJSON()
@@ -210,7 +211,7 @@ class Workout
 		$workoutJumper.add EE('option', {'@value': @id}, "Workout #{letter}")
 
 		@exercises = []
-		exercises.forEach (e)=> @addExercise(false, e)
+		exercises.each (e)=> @addExercise(false, e)
 
 	addExercise: (animated = true, exercise = null) ->
 		# TODO: where the heck are the exercise fields filled???
@@ -234,7 +235,7 @@ class Workout
 
 	update: ->
 		@interval = parseInt $('[name=workout_interval]', @root).get('value')
-		@exercises.forEach (e)-> e.update()
+		@exercises.each (e)-> e.update()
 
 	toJSON: ->
 		@setDirty false
@@ -245,7 +246,7 @@ class Workout
 	@rehydrate: (pojo)->
 		exercises = []
 		if Array.isNonEmptyArray pojo.exercises
-			pojo.exercises.forEach (e)-> exercises.push Exercise.fromJSON(e)
+			pojo.exercises.each (e)-> exercises.push Exercise.fromJSON(e)
 		new Workout(false, pojo.interval, exercises)
 
 	@fromJSON: (json)->
@@ -255,7 +256,7 @@ class Workout
 		data = JSON.parse json
 		if Array.isNonEmptyArray data
 			workouts = []
-			data.forEach (single_data)->
+			data.each (single_data)->
 				w = Workout.rehydrate single_data
 				w.setDirty false
 				workouts.push w
@@ -291,7 +292,7 @@ $('form').onChange ->
 , 'input'
 
 $('.save').on 'click', ->
-	Workout.list.forEach (w)-> w.update()
+	Workout.list.each (w)-> w.update()
 	window.close Workout.list.listToJSON()
 
 
