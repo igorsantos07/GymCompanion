@@ -11,11 +11,14 @@ desk-install:
 bth-install:
 	pebble install --logs --pebble_id 00:17:EC:51:A0:E5
 deploy:
+	cp config/post-receive.githook /root/projects/gymcompanion.git/hooks/post-receive
+	cp config/gymcompanion.host /etc/apache2/sites-available/gymcompanion.conf
+	
 	npm install
 	ENV=prod ./web_compile
+	
 	cp build/src/js/complete.html /var/www/gymcompanion/index.html
 	cp src/js/favicon* /var/www/gymcompanion/
 	cp src/js/libs/bugsense.min.js /var/www/gymcompanion/bugsense.min.js
-	cp config/post-receive.githook /root/projects/gymcompanion.git/hooks/post-receive
-	cp config/gymcompanion.host /etc/apache2/sites-available/gymcompanion.conf
+	
 	service apache2 reload

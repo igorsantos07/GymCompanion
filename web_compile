@@ -69,7 +69,7 @@ for line in open(html):
 			final_file.write(open(lib).read())
 		final_file.write(open(js).read())
 	elif 'APP_VERSION' in line:
-		git_commit = check_output('git log -1 --format="%h"', shell=True).rstrip()
+		git_commit = check_output('env - git log -1 --format="%h"', shell=True).rstrip()
 		final_file.write(line.replace('APP_VERSION', git_commit))
 	else:
 		final_file.write(line)
