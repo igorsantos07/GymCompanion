@@ -13,9 +13,9 @@ print   "==================================="
 
 dev_null = open('/dev/null', 'w')
 def minify(file):
-	if not DEV:
-		print "  > Minifying "+file.rpartition('/')[2]
-		check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
+    if not DEV:
+        print "  > Minifying "+file.rpartition('/')[2]
+        check_call(node+'minify '+file+' '+file, shell=True, stdout=dev_null, stderr=dev_null)
 
 # root     = os.path.dirname(os.path.abspath(__file__))+'/'
 root     = ''
@@ -24,9 +24,10 @@ root_js  = root+'src/js/'
 build_js = root+'build/src/js/'
 
 html       = root_js+'index.html'
-libs       = [root_js+'libs/minified.js']
+libs       = [root_js+'libs/alertify.min.js', root_js+'libs/minified.js']
 js         = build_js+'script.js'
-css        = build_js+'styles.css'
+less       = [root_js+'less/styles.less', None, root_js+'less/alertify.custom.less']
+css        = [build_js+'styles.css', root_js+'less/alertify.core.css', build_js+'alertify.custom.css']
 final_path = build_js+'complete.html'
 uncss_ignore = ','.join([
 	'header.main.floating h1',
@@ -50,29 +51,33 @@ check_call(node+'coffee --no-header -bc -o '+build_js+' '+root_js, shell=True)
 check_call('cp '+root_js+'libs/bugsense.min.js '+build_js+'bugsense.min.js', shell=True)
 minify(js)
 print "==> Shortening CSS's"
-check_call(node+'lessc '+root_js+'/less/styles.less '+css, shell=True)
+for i in range(len(less)):
+    if not less[i]: continue
+    print "  > Compiling "+less[i]
+    check_call(node+'lessc '+less[i]+' '+css[i], shell=True)
 print "  > Removing unused rules"
-check_call(node+'uncss -i "'+uncss_ignore+'" -s ../../'+css+' '+html+' > '+css+'.tmp && mv '+css+'.tmp '+css, shell=True)
+check_call(node+'uncss -i "'+uncss_ignore+'" -s ../../'+css[0]+' '+html+' > '+css[0]+'.tmp && mv '+css[0]+'.tmp '+css[0], shell=True)
 print "  > Prefixing needed rules"
-check_call(node+'autoprefixer -b "last 2 iOS versions, Android 4.1" -o '+css+'.tmp '+css+' && mv '+css+'.tmp '+css, shell=True)
-minify(css)
+#check_call(node+'autoprefixer -b "last 2 iOS versions, Android 4.1" -o '+css[0]+'.tmp '+css[0]+' && mv '+css[0]+'.tmp '+css[0], shell=True)
 
 # Mixes stuff into the HTML file
 print "==> Compiling everything into the HTML file"
 final_file = open(final_path, 'w')
 
 for line in open(html):
-	if 'HERE BE CSS' in line:
-		final_file.write(open(css).read())
-	elif 'HERE BE JS' in line:
-		for lib in libs:
-			final_file.write(open(lib).read())
-		final_file.write(open(js).read())
-	elif 'APP_VERSION' in line:
-		git_commit = check_output('env - git log -1 --format="%h"', shell=True).rstrip()
-		final_file.write(line.replace('APP_VERSION', git_commit))
-	else:
-		final_file.write(line)
+    if 'HERE BE CSS' in line:
+        for style in css:
+            minify(style)
+            final_file.write(open(style).read())
+    elif 'HERE BE JS' in line:
+        for lib in libs:
+            final_file.write(open(lib).read())
+        final_file.write(open(js).read())
+    elif 'APP_VERSION' in line:
+        git_commit = check_output('env - git log -1 --format="%h"', shell=True).rstrip()
+        final_file.write(line.replace('APP_VERSION', git_commit))
+    else:
+        final_file.write(line)
 
 final_file.close()
 minify(final_path)

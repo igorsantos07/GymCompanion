@@ -7,6 +7,7 @@ HTML = MINI.HTML
 $body= $('body')
 $workoutJumper = $('nav select')
 
+alertify.set delay: 1500
 
 ############################# Internationalization #############################
 
@@ -43,7 +44,8 @@ i18n =
 		'Donations',
 		'Ideas',
 		'Source code',
-		'Contact me'
+		'Contact me',
+		'Your workout was saved!',
 	]
 	pt: [
 		'GymCompanion - Parceiro de academia'
@@ -62,7 +64,8 @@ i18n =
 		'Doações',
 		'Idéias',
 		'Código-fonte',
-		'Contato'
+		'Contato',
+		'Sua série foi salva!',
 	]
 	translate: (e)->
 		if @user == @source then return
@@ -294,6 +297,7 @@ $('form').onChange ->
 $('.save').on 'click', ->
 	Workout.list.each (w)-> w.update()
 	window.close Workout.list.listToJSON()
+	alertify.success $$('#success-save').innerHTML
 
 
 ################################## Template boilerplating ##################################
