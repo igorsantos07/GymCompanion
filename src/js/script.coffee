@@ -336,16 +336,17 @@ $.ready ->
 
 	if location.hash.indexOf('#donation-') == 0
 		location.hash = ''
-		if document.referrer.indexOf('paypal') != -1
-			switch location.hash
-				when '#donation-success'
-						alertify.set { labels: { ok: i18n.t("Yeah, I'm awesome!") } }
-						alertify.alert i18n.t("<strong>Thank for the help!</strong><br />You're making GymCompanion happen :D")
-						setDonor true
-				when '#donation-gaveup'
-					location.hash = ''
-					alertify.set delay: 10000
-					alertify.error i18n.t('Whoops! Did you give up on donating?<br/>Think again, protein bars are expensive! :(')
+		# This if was removed since for some reason document.referrer was always empty, in the JS or HTML page directly
+		# if document.referrer.indexOf('paypal') != -1
+		switch location.hash
+			when '#donation-success'
+					alertify.set { labels: { ok: i18n.t("Yeah, I'm awesome!") } }
+					alertify.alert i18n.t("<strong>Thank for the help!</strong><br />You're making GymCompanion happen :D")
+					setDonor true
+			when '#donation-gaveup'
+				location.hash = ''
+				alertify.set delay: 10000
+				alertify.error i18n.t('Whoops! Did you give up on donating?<br/>Think again, protein bars are expensive! :(')
 
 	configureAlertify()
 
