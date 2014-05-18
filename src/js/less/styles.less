@@ -47,6 +47,7 @@ header {
 			font-weight: bold;
 			line-height: 60px;
 			br { display: none; }
+			&.vip { background-image: data-uri("image/png;base64", "../img/logo-vip.png"); }
 		}
 
 		nav {
@@ -130,6 +131,20 @@ footer {
 			}
 		}
     }
+
+	a#donation {
+		padding-left: 18px;
+		.type(@name) {
+			background: data-uri("image/png;base64", "../img/@{name}-16px.png") no-repeat center left;
+		}
+		&.type-1 { .type('beer-mugs'); }
+		&.type-2 { .type('beer'); }
+		&.type-3 { .type('money1'); }
+		&.type-4 { .type('money2'); }
+		&.type-5 { .type('money-bag'); }
+		&.type-6 { .type('money-coins'); }
+		&.type-7 { .type('money-dollar'); }
+	}
 }
 
 @big-button-height: 50px;

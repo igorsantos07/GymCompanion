@@ -7,8 +7,6 @@ HTML = MINI.HTML
 $body= $('body')
 $workoutJumper = $('nav select')
 
-alertify.set delay: 1500
-
 ############################# Internationalization #############################
 
 throwError = (exception)->
@@ -22,9 +20,9 @@ i18n =
 	skipWords: ['Gym', 'Companion', 'sec', 'kg/lb', ' :)']
 	user: navigator.language.split('-')[0]
 	source: 'en'
-	Exception: (@tag, @string, @missingAt)->
+	Exception: (@tag, @string, @lang)->
 		@name     = 'i18nException'
-		@toString = -> "Missing translation for #{@missingAt} lang: <#{@tag}> '#{@string}'"
+		@toString = -> "Missing translation for #{@lang} lang: <#{@tag}> '#{@string}'"
 		@message  = @toString()
 		this
 	en: [
@@ -40,12 +38,17 @@ i18n =
 		'Reps:'
 		'Weight:'
 		'Interval:'
-		' New Exercise',
-		'Donations',
-		'Ideas',
-		'Source code',
-		'Contact me',
-		'Your workout was saved!',
+		' New Exercise'
+		'Buy me a beer!'
+		'Ideas / Bugs'
+		'Contact me'
+		'Your workout was saved!'
+		"Yeah, I'm awesome!"
+		"<strong>Thank for the help!</strong><br />You're making GymCompanion happen :D"
+		'Whoops! Did you give up on donating?<br/>Think again, protein bars are expensive! :('
+		'Donor VIP status is over...<br/>How about a small donation again this month? (:'
+		'OK'
+		'Cancel'
 	]
 	pt: [
 		'GymCompanion - Parceiro de academia'
@@ -61,12 +64,42 @@ i18n =
 		'Peso:'
 		'A cada:'
 		' Novo exercício',
-		'Doações',
-		'Idéias',
-		'Código-fonte',
-		'Contato',
-		'Sua série foi salva!',
+		'Me dê uma cerveja!'
+		'Idéias / Bugs'
+		'Contato'
+		'Sua série foi salva!'
+		"Valeu, eu sou foda!"
+		"<strong>Obrigado pela ajuda!</strong><br />Pessoas como você fazem o GymCompanion acontecer :D"
+		'Oops! Desistiu de doar?<br/>Pensa de novo, as barrinhas de proteína são caras! :('
+		'Seu status VIP de doador acabou...<br/>Que tal outra doação pequena esse mês? (:'
+		'OK'
+		'Cancelar'
 	]
+
+	###
+	# Simply translates a string
+	# @param string v The value to be translated
+	# @return string
+	###
+	t: (v)->
+		if (index = @[@source].indexOf(v)) != -1
+			if @[@user][index]?
+				return @[@user][index]
+			else
+				error = 'user'
+		else
+			error = 'source'
+
+		if typeof error == 'string'
+			throwError new i18n.Exception '{embed}', v, error
+		return v
+
+	###
+	# Translates an entire element and all it's child nodes
+	# @param HTMLElement e The element to be translated
+	# @return void
+	# @throws i18n.Exception
+	###
 	translate: (e)->
 		if @user == @source then return
 		for node in e.childNodes
@@ -83,12 +116,19 @@ i18n =
 					error = 'source'
 
 				if typeof error == 'string'
-						throwError new i18n.Exception node.parentNode.nodeName, node.nodeValue, error
+					throwError new i18n.Exception node.parentNode.nodeName, node.nodeValue, error
 
 i18n.translate $$('head title')
 i18n.translate $$('body')
 
 ##################### Global functions, objects and stuff ######################
+
+configureAlertify = ->
+	alertify.set
+		delay: 1500
+		labels:
+			ok: i18n.t 'OK'
+			cancel: i18n.t 'Cancel'
 
 #### Don't change those, they're changed on runtime by pebble-integration script
 window.isPebble = false
@@ -271,6 +311,43 @@ class Workout
 
 
 ################################# Events and interactions #################################
+
+$.ready ->
+	now   = new Date()
+	month = "#{now.getMonth()}"
+	year  = "#{now.getFullYear()}"
+
+	setDonor = (donated, persist = true)->
+		if donated
+			$('header h1').set '+vip'
+			if persist then localStorage.donatedOn = "#{month}-#{year}"
+		else
+			$('header h1').set '-vip'
+			if persist then localStorage.removeItem 'donatedOn'
+
+	if localStorage.donatedOn?
+		donateDate = localStorage.donatedOn.split('-')
+		if donateDate[1] < year || (donateDate[1] == year && donateDate[0] < month)
+			setDonor false
+			alertify.set delay: 5000
+			alertify.log i18n.t('Donor VIP status is over...<br/>How about a small donation again this month? (:')
+		else
+			setDonor true, false
+
+	if location.hash.indexOf('#donation-') == 0
+		location.hash = ''
+		if document.referrer.indexOf('paypal') != -1
+			switch location.hash
+				when '#donation-success'
+						alertify.set { labels: { ok: i18n.t("Yeah, I'm awesome!") } }
+						alertify.alert i18n.t("<strong>Thank for the help!</strong><br />You're making GymCompanion happen :D")
+						setDonor true
+				when '#donation-gaveup'
+					location.hash = ''
+					alertify.set delay: 10000
+					alertify.error i18n.t('Whoops! Did you give up on donating?<br/>Think again, protein bars are expensive! :(')
+
+	configureAlertify()
 
 $(window).on 'scroll', (->
 	floatHeader = $('header.main').toggle 'floating'

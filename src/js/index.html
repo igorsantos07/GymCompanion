@@ -18,8 +18,15 @@
         <style>
             /* HERE BE CSS */
         </style>
+	    <script>
+		    function beerIcon() {
+			    var max = 7, min = 0,
+			        num = Math.floor(Math.random() * (max-min) + 1) + min
+			        document.querySelector('a#donation').className = 'type-'+num
+		    }
+	    </script>
     </head>
-    <body>
+    <body onload="beerIcon()">
         <script src="bugsense.min.js"></script>
         <script>
 			if (location.protocol != 'file:') {
@@ -109,9 +116,8 @@
 
         <footer>
             <ul>
-                <li>Donations</li>
-                <li><a href="https://github.com/igorsantos07/GymCompanion/issues?labels=Web+UI&state=open">Ideas</a></li>
-                <li><a href="https://github.com/igorsantos07/GymCompanion">Source code</a></li>
+                <li><a id="donation" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A2JL5PXEJM4F8">Buy me a beer!</a></li>
+                <li><a href="https://github.com/igorsantos07/GymCompanion/issues?labels=Web+UI&state=open">Ideas / Bugs</a></li>
                 <li><a href="mailto:igorsantos07+gc@gmail.com?subject=Feedback%20GymCompanion">Contact me</a> :)</li>
             </ul>
         </footer>

@@ -30,7 +30,9 @@ less       = [root_js+'less/styles.less', None, root_js+'less/alertify.custom.le
 css        = [build_js+'styles.css', root_js+'less/alertify.core.css', build_js+'alertify.custom.css']
 final_path = build_js+'complete.html'
 uncss_ignore = ','.join([
+	'header.main h1.vip',
 	'header.main.floating h1',
+	'header.main.floating h1.vip',
 	'header.main.floating h1 br',
 	'header.main.floating nav',
 	'header.main.floating nav select',
@@ -43,6 +45,13 @@ uncss_ignore = ','.join([
     '.buttons .newWorkout:disabled .noAdd',
     '.buttons .newWorkout .add',
     '.buttons .newWorkout .noAdd',
+    'footer a#donation.type-1',
+    'footer a#donation.type-2',
+    'footer a#donation.type-3',
+    'footer a#donation.type-4',
+    'footer a#donation.type-5',
+    'footer a#donation.type-6',
+    'footer a#donation.type-7'
 ])
 
 # Compiling CoffeeScript and Less
