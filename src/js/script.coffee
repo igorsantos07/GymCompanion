@@ -335,7 +335,6 @@ $.ready ->
 			setDonor true, false
 
 	if location.hash.indexOf('#donation-') == 0
-		location.hash = ''
 		# This if was removed since for some reason document.referrer was always empty, in the JS or HTML page directly
 		# if document.referrer.indexOf('paypal') != -1
 		switch location.hash
@@ -347,6 +346,7 @@ $.ready ->
 				location.hash = ''
 				alertify.set delay: 10000
 				alertify.error i18n.t('Whoops! Did you give up on donating?<br/>Think again, protein bars are expensive! :(')
+		location.hash = ''
 
 	configureAlertify()
 
