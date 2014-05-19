@@ -335,7 +335,7 @@ $.ready ->
 			setDonor true, false
 
 	if location.hash.indexOf('#donation-') == 0
-		# This if was removed since for some reason document.referrer was always empty, in the JS or HTML page directly
+		# TODO: This will only work when paypal goes into HTTP or GymCompanion into HTTPS
 		# if document.referrer.indexOf('paypal') != -1
 		switch location.hash
 			when '#donation-success'

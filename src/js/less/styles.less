@@ -132,18 +132,27 @@ footer {
 		}
     }
 
-	a#donation {
-		padding-left: 18px;
-		.type(@name) {
-			background: data-uri("image/png;base64", "../img/@{name}-16px.png") no-repeat center left;
+	#donation {
+		#donation-paypal, #donation-pagseguro {
+			display: none;
 		}
-		&.type-1 { .type('beer-mugs'); }
-		&.type-2 { .type('beer'); }
-		&.type-3 { .type('money1'); }
-		&.type-4 { .type('money2'); }
-		&.type-5 { .type('money-bag'); }
-		&.type-6 { .type('money-coins'); }
-		&.type-7 { .type('money-dollar'); }
+		form {
+			margin: 0;
+			padding: 0;
+		}
+		a {
+			padding-left: 18px;
+			.type(@name) {
+				background: data-uri("image/png;base64", "../img/@{name}-16px.png") no-repeat center left;
+			}
+			&.type-1 { .type('beer-mugs'); }
+			&.type-2 { .type('beer'); }
+			&.type-3 { .type('money1'); }
+			&.type-4 { .type('money2'); }
+			&.type-5 { .type('money-bag'); }
+			&.type-6 { .type('money-coins'); }
+			&.type-7 { .type('money-dollar'); }
+		}
 	}
 }
 

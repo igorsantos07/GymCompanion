@@ -45,13 +45,13 @@ uncss_ignore = ','.join([
     '.buttons .newWorkout:disabled .noAdd',
     '.buttons .newWorkout .add',
     '.buttons .newWorkout .noAdd',
-    'footer a#donation.type-1',
-    'footer a#donation.type-2',
-    'footer a#donation.type-3',
-    'footer a#donation.type-4',
-    'footer a#donation.type-5',
-    'footer a#donation.type-6',
-    'footer a#donation.type-7'
+    'footer #donation a.type-1',
+    'footer #donation a.type-2',
+    'footer #donation a.type-3',
+    'footer #donation a.type-4',
+    'footer #donation a.type-5',
+    'footer #donation a.type-6',
+    'footer #donation a.type-7'
 ])
 
 # Compiling CoffeeScript and Less
