@@ -28,7 +28,7 @@
 		    function donationSetup() {
 			    var MAX = 7, MIN = 0,
 			        num = Math.floor(Math.random() * (MAX-MIN) + 1) + MIN
-			        donationSystem = (geoplugin_countryCode() == 'BR')? 'pagseguro' : 'paypal';
+			        donationSystem = (geoplugin_countryCode() == 'BR')? 'br' : 'intl';
 		        document.querySelector('#donation-'+donationSystem).style.display = 'inline';
 			    Array.prototype.slice.call(document.querySelectorAll('#donation a')).forEach(function (a) {
 				    a.className = 'type-'+num; })
@@ -132,13 +132,8 @@
         <footer>
             <ul>
                 <li id="donation">
-	                <a id="donation-paypal" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QVN65ZC3EFCG8">Buy me a beer!</a>
-	                <form id="donation-pagseguro"action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
-		                <input type="hidden" name="currency" value="BRL" />
-		                <input type="hidden" name="receiverEmail" value="igorsantos07@gmail.com" />
-		                <input type="hidden" name="redirectURL" value="http://www.igorsantos.com.br" />
-		                <a href="javascript:void(0)" onclick="this.parentElement.submit()">Buy me a beer!</a>
-	                </form>
+	                <a id="donation-intl" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QVN65ZC3EFCG8">Buy me a beer!</a>
+	                <a id="donation-br"   href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A2JL5PXEJM4F8">Buy me a beer!</a>
                 </li>
                 <li><a href="https://github.com/igorsantos07/GymCompanion/issues?labels=Web+UI&state=open">Ideas / Bugs</a></li>
                 <li><a href="mailto:igorsantos07+gc@gmail.com?subject=Feedback%20GymCompanion">Contact me</a> :)</li>
