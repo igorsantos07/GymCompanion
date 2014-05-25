@@ -4,7 +4,9 @@ $    = MINI.$
 $$   = MINI.$$
 EE   = MINI.EE
 HTML = MINI.HTML
-$body= $('body')
+
+$body          = $('body')
+$form          = $('form')
 $workoutJumper = $('nav select')
 
 
@@ -280,15 +282,25 @@ $workoutJumper.on 'change', ->
 $('.newWorkout').on 'click', ->
 	new Workout
 
-$('form').on 'click', ->
+$form.on 'click', ->
 	workout_id = this.get 'workout'
 	Workout.list[workout_id].addExercise()
 , 'fieldset .newExercise' #this is made this way to work like old jQuery's .live()
 
-$('form').onChange ->
+$form.onChange ->
 	if !@get 'changed'
 		@set changed: true
 		Workout.list[@get('workout')].setDirty true
+, 'input'
+
+#TODO: replace both events by onFocus when this gets closed: https://github.com/timjansen/minified.js/issues/40
+#TODO: not even the plain .on() method is working! https://github.com/timjansen/minified.js/issues/41
+$form.on 'focus', ->
+	@up('fieldset').set('+focused')
+, 'input'
+
+$form.on 'blur', ->
+	@up('fieldset').set('-focused')
 , 'input'
 
 $('.save').on 'click', ->

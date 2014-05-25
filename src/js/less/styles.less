@@ -1,5 +1,5 @@
-@colorPlight:   #FFD28A;
-@colorPlighter: #FFE1B0;
+@colorPLight:   #FFD28A;
+@colorPLighter: #FFE1B0;
 @colorPMedium:  #FBB911;
 @colorPDark:    #D3A863;
 @colorPDarker:  #C2882D;
@@ -250,6 +250,18 @@ fieldset {
         .uk-badge-warning;
         top: 5px;
         right: 5px;
+        &.small {
+            background-color: #D77F33;
+            background-image: none;
+        }
+        &.text-icon {
+            font-size: 16px;
+            font-weight: normal;
+            padding: 6px 5px;
+        }
+    }
+    &.focused span.badge.small {
+        opacity: 0.4;
     }
 
     .newExercise:last-child {
