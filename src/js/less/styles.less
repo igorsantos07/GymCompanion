@@ -1,15 +1,5 @@
-@colorPLight:   #FFD28A;
-@colorPLighter: #FFE1B0;
-@colorPMedium:  #FBB911;
-@colorPDark:    #D3A863;
-@colorPDarker:  #C2882D;
-@colorSLighter: white;
-@colorSLight:   #CCC;
-@colorSMedium:  #999;
-@colorSDark:    #666;
-@colorSDarker:  black;
-
-@import (less) "ui-kit.css";
+@import        "_variables.less";
+@import (less) "ui-kit.less";
 
 * {
 	box-sizing: border-box;
@@ -57,6 +47,7 @@ header {
 			font-weight: bold;
 			line-height: 60px;
 			br { display: none; }
+			&.vip { background-image: data-uri("image/png;base64", "../img/logo-vip.png"); }
 		}
 
 		nav {
@@ -140,6 +131,29 @@ footer {
 			}
 		}
     }
+
+	#donation {
+		#donation-br, #donation-intl {
+			display: none;
+		}
+		form {
+			margin: 0;
+			padding: 0;
+		}
+		a {
+			padding-left: 18px;
+			.type(@name) {
+				background: data-uri("image/png;base64", "../img/@{name}-16px.png") no-repeat center left;
+			}
+			&.type-1 { .type('beer-mugs'); }
+			&.type-2 { .type('beer'); }
+			&.type-3 { .type('money1'); }
+			&.type-4 { .type('money2'); }
+			&.type-5 { .type('money-bag'); }
+			&.type-6 { .type('money-coins'); }
+			&.type-7 { .type('money-dollar'); }
+		}
+	}
 }
 
 @big-button-height: 50px;
