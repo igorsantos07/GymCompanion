@@ -2,6 +2,8 @@ all:
 	pebble build
 web:
 	./web_compile
+mobile:
+	ENV=mobile ./web_compile
 clean:
 	pebble clean
 install:

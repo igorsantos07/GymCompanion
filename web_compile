@@ -5,11 +5,12 @@ from subprocess import call, check_call, check_output
 
 ENV    = os.getenv('ENV', 'dev')
 DEV    = "dev" in ENV
-PROD   = "prod" in ENV
 PEBBLE = "pebble" in ENV
+MOBILE = "mobile" in ENV
+PROD   = "prod" in ENV or MOBILE
 
-print "\nWeb "+ENV+" compilation process"
-print   "==================================="
+print "\nWeb ~"+ENV+"~ compilation process"
+print   "====================================="
 
 dev_null = open('/dev/null', 'w')
 def minify(file):
@@ -28,7 +29,7 @@ libs       = [root_js+'libs/alertify.min.js', root_js+'libs/minified.js']
 js         = build_js+'script.js'
 less       = [root_js+'less/styles.less', None, root_js+'less/alertify.custom.less']
 css        = [build_js+'styles.css', root_js+'less/alertify.core.css', build_js+'alertify.custom.css']
-final_path = build_js+'complete.html'
+final_path = build_js+'complete.html' if not MOBILE else build_js+'index.html'
 uncss_ignore = ','.join([
 	'header.main h1.vip',
 	'header.main.floating h1',
@@ -92,18 +93,22 @@ final_file.close()
 minify(final_path)
 final_file = open(final_path)
 
-# Bundling that HTML into the main PebbleKit JS File
-print "==> Bundling HTML code into the PebbleKit JS file"
-pebblekit_path = build_js+'pebble-js-app.js'
-pebblekit_file = open(pebblekit_path, 'w')
-pebblekit_file.write("config_html = "+repr(final_file.read())+";\n")
-pebblekit_file.write(open(build_js+'pebble-integration.js').read())
-pebblekit_file.close()
-minify(pebblekit_path)
+if PEBBLE:
+    # Bundling that HTML into the main PebbleKit JS File
+    print "==> Bundling HTML code into the PebbleKit JS file"
+    pebblekit_path = build_js+'pebble-js-app.js'
+    pebblekit_file = open(pebblekit_path, 'w')
+    pebblekit_file.write("config_html = "+repr(final_file.read())+";\n")
+    pebblekit_file.write(open(build_js+'pebble-integration.js').read())
+    pebblekit_file.close()
+    minify(pebblekit_path)
 
-final_size = os.path.getsize(pebblekit_path)
-print "  > Final file size: %.2fKb" % (final_size / 1024.0)
+    final_size = os.path.getsize(pebblekit_path)
+else:
+    final_size = os.path.getsize(final_path)
 
-print "==================================="
-print "====> Web compilation done, sir!\n"
+print "~~> Final file size: %.2fKb" % (final_size / 1024.0)
+
+print "====================================="
+print "====> Compilation process done, sir!" 
 exit(0)
