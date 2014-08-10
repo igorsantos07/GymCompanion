@@ -68,7 +68,7 @@ for i in range(len(less)):
 print "  > Removing unused rules"
 check_call(node+'uncss -i "'+uncss_ignore+'" -s ../../'+css[0]+' '+html+' > '+css[0]+'.tmp && mv '+css[0]+'.tmp '+css[0], shell=True)
 print "  > Prefixing needed rules"
-#check_call(node+'autoprefixer -b "last 2 iOS versions, Android 4.1" -o '+css[0]+'.tmp '+css[0]+' && mv '+css[0]+'.tmp '+css[0], shell=True)
+check_call(node+'autoprefixer -b "last 2 iOS versions, Android 2.2" -o '+css[0]+'.tmp '+css[0]+' && mv '+css[0]+'.tmp '+css[0], shell=True)
 
 # Mixes stuff into the HTML file
 print "==> Compiling everything into the HTML file"
