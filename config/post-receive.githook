@@ -1,6 +1,0 @@
-#!/bin/sh
-
-#Initial setup: run git clone <production_repo> /opt/gymcompanion
-cd /opt/gymcompanion
-env - git pull -q origin
-make -B deploy
