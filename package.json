@@ -1,0 +1,25 @@
+{
+  "name": "gymcompanion",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "custom-react-scripts": "0.0.23",
+    "gh-pages": "^1.0.0"
+  },
+  "dependencies": {
+    "bulma": "^0.4.2",
+    "bulmaswatch": "^0.4.1",
+    "immutable": "^3.8.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "redux-immutable": "^4.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && gh-pages -d build"
+  }
+}
