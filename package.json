@@ -1,6 +1,7 @@
 {
   "name": "gymcompanion",
   "version": "0.1.0",
+  "homepage": "http://me.igorsantos.com.br/GymCompanion/",
   "private": true,
   "devDependencies": {
     "custom-react-scripts": "0.0.23",
