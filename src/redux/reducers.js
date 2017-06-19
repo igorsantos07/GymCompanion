@@ -17,12 +17,12 @@ const groups = (groups, action) => {
   switch (action.type) {
     case ACTIONS.ADD_GROUP:
       return groups
-        .map(group => group.withStatus(false))
+        .map(group => group.mutate({ active: false }))
         .push(new Group())
         .sortBy(g => g.id).reverse()
 
     case ACTIONS.SET_ACTIVE_GROUP:
-      return groups.map(group => group.withStatus(action.id == group.id))
+      return groups.map(group => group.mutate({ active: (action.id == group.id) }))
 
     case ACTIONS.ARCHIVE_GROUP:
       throw new Error('Not implemented')

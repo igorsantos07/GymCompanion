@@ -27,8 +27,8 @@ export default class Exercise extends Record({
     super(data)
   }
 
-  withStatus(bool) {
-    return new Exercise(this.id, Object.assign({}, this.toJS(), { active: bool }))
+  mutate(data) {
+    return new Exercise(this.id, Object.assign(this.toJS(), data))
   }
 
 }

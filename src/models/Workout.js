@@ -30,13 +30,13 @@ export default class Workout extends Record({
       name     : this.name,
       active   : this.active,
       exercises: this.exercises
-                     .map(e => e.withStatus(false))
+                     .map(e => e.mutate({ active: false }))
                      .push(exercise || new Exercise(this.exercises.last().id + 1))
     })
   }
 
-  withStatus(bool) {
-    return new Workout(this.id, Object.assign({}, this.toJS(), { active: bool }))
+  mutate(data) {
+    return new Workout(this.id, Object.assign(this.toJS(), data))
   }
 
 }

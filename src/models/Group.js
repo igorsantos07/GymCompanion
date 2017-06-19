@@ -35,12 +35,12 @@ export default class Group extends Record({
       description: this.description,
       active     : this.active,
       workouts   : this.workouts
-                       .map(w => w.withStatus(false))
+                       .map(w => w.mutate({ active: false }))
                        .push(workout || new Workout(this.workouts.last().id + 1))
     })
   }
 
-  withStatus(bool) {
-    return new Group(Object.assign({}, this.toJS(), { active: bool }))
+  mutate(data) {
+    return new Group(Object.assign(this.toJS(), data))
   }
 }
