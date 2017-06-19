@@ -1,8 +1,4 @@
-export const ACTIONS = Object.freeze({
-  ADD_GROUP      : 'ADD_GROUP',
-  ARCHIVE_GROUP  : 'ARCHIVE_GROUP',
-  ADD_WORKOUT    : 'ADD_WORKOUT',
-  REMOVE_WORKOUT : 'REMOVE_WORKOUT',
-  ADD_EXERCISE   : 'ADD_EXERCISE',
-  REMOVE_EXERCISE: 'REMOVE_EXERCISE',
-})
+import { ACTIONS } from '../lib/constants'
+
+export const addGroup       = (setActive = false) => ({ type: ACTIONS.ADD_GROUP, setActive })
+export const setActiveGroup = (id) => ({ type: ACTIONS.SET_ACTIVE_GROUP, id })

@@ -1,12 +1,25 @@
+import { List } from 'immutable'
 export default class Workout {
 
-  static lastLetter = 64;
+  static lastId     = 0
+  static lastLetter = 64
 
-  letter;
-  name;
+  /** @type number */
+  id
+
+  /** @type string */
+  letter
+
+  /** @type string */
+  name
+
+  /** @type Immutable.List */
+  exercises
 
   constructor(name = null) {
-    this.letter = String.fromCharCode(++Workout.lastLetter);
-    this.name   = name || 'Workout ' + this.letter;
+    this.id        = ++Workout.lastId
+    this.letter    = String.fromCharCode(++Workout.lastLetter)
+    this.name      = name || 'Workout ' + this.letter
+    this.exercises = new List()
   }
 }

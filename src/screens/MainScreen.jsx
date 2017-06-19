@@ -5,7 +5,7 @@ class MainScreen extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         <Header/>
       </main>
     )
