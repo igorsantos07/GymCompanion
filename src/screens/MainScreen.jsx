@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../components/Header'
+import WorkoutGroup from '../components/WorkoutGroup'
 
 class MainScreen extends Component {
 
@@ -7,6 +8,8 @@ class MainScreen extends Component {
     return (
       <main className="container">
         <Header/>
+        <WorkoutGroup/>
+
       </main>
     )
   }

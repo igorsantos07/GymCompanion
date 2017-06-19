@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addGroup, setActiveGroup } from '../redux/actions'
+// import { pick } from 'lodash/object'
 
 const state2props = state => {
   return {
-    active: state.getIn(['groups', 'active']),
-    groups: state.getIn(['groups', 'list']).map(group => ({
+    // groups: state.get('groups').map(group => pick(group, ['id', 'name', 'active'])).toJS()
+    groups: state.get('groups').map(group => ({
       id: group.id,
-      name: group.name
+      name: group.name,
+      active: group.active
     })).toJS()
   }
 }
@@ -36,8 +38,9 @@ class GroupSelector extends Component {
   }
 
   render() {
+    const active = this.props.groups.filter(group => group.active)[0].id || 0
     return (
-      <select value={this.props.active} onChange={this.onChange}>
+      <select value={active} onChange={this.onChange}>
         {
           this.props.groups.length ?
             this.props.groups.map(group => <option key={group.id} value={group.id}>{group.name}</option>) :

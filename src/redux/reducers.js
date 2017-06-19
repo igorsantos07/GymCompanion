@@ -4,24 +4,24 @@ import { combineReducers } from 'redux-immutable'
 import Group from '../models/Group'
 
 export const initialState = fromJS({
-  groups: { list: [], active: 0 },
+  groups: [new Group()],
 })
 
 /**
- * @param {Immutable.Map} groups
+ * @param {Immutable.List<Group>} groups
  * @param {Object} action
  * @returns {*}
  */
 const groups = (groups, action) => {
   switch (action.type) {
     case ACTIONS.ADD_GROUP:
-      const group = new Group()
       return groups
-        .set('list', groups.get('list').push(group).sortBy(g => g.id).reverse())
-        .set('active', group.id)
+        .map(group => { group.active = false; return group })
+        .push(new Group())
+        .sortBy(g => g.id).reverse()
 
     case ACTIONS.SET_ACTIVE_GROUP:
-      return groups.set('active', action.id)
+      return groups.map(group => { group.active = (action.id == group.id); return group })
 
     case ACTIONS.ARCHIVE_GROUP:
       throw new Error('Not implemented')

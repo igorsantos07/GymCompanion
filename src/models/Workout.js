@@ -1,9 +1,6 @@
 import { List } from 'immutable'
 export default class Workout {
 
-  static lastId     = 0
-  static lastLetter = 64
-
   /** @type number */
   id
 
@@ -13,12 +10,15 @@ export default class Workout {
   /** @type string */
   name
 
+  /** @type boolean */
+  active = true
+
   /** @type Immutable.List */
   exercises
 
-  constructor(name = null) {
-    this.id        = ++Workout.lastId
-    this.letter    = String.fromCharCode(++Workout.lastLetter)
+  constructor(id, name = null) {
+    this.id        = id
+    this.letter    = String.fromCharCode('A'.charCodeAt(0) + id - 1)
     this.name      = name || 'Workout ' + this.letter
     this.exercises = new List()
   }

@@ -1,4 +1,5 @@
 import { List } from 'immutable'
+import Workout from './Workout'
 
 export default class Group {
 
@@ -16,6 +17,9 @@ export default class Group {
   /** @type string */
   description
 
+  /** @type boolean */
+  active = true
+
   /** @type Immutable.List */
   workouts
 
@@ -23,7 +27,7 @@ export default class Group {
     this.id          = ++Group.lastId
     this.date        = new Date()
     this.name        = name || `#${this.id} ${this.date.toLocaleString(undefined,{ month: 'short', year: 'numeric' })}`
-    this.description = description
-    this.workouts    = new List()
+    this.description = description || `No description for Workout Group ${this.name}`
+    this.workouts    = new List([new Workout(1)])
   }
 }
