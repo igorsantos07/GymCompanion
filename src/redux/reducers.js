@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { fromJS } from 'immutable'
 import { ACTIONS } from '../lib/constants'
 import { combineReducers } from 'redux-immutable'
@@ -16,22 +17,21 @@ const groups = (groups, action) => {
   switch (action.type) {
     case ACTIONS.ADD_GROUP:
       return groups
-        .map(group => { group.active = false; return group })
+        .map(group => group.withStatus(false))
         .push(new Group())
         .sortBy(g => g.id).reverse()
 
     case ACTIONS.SET_ACTIVE_GROUP:
-      return groups.map(group => { group.active = (action.id == group.id); return group })
+      return groups.map(group => group.withStatus(action.id == group.id))
 
     case ACTIONS.ARCHIVE_GROUP:
       throw new Error('Not implemented')
 
     default:
-      // if (action.type.indexOf('WORKOUT')) {
-      //   const locator = [action.group, 'workouts']
-      //   let workouts  = groups.getIn(locator, [])
-      //   return groups.setIn(locator, workoutReducer(workouts, action))
-      // }
+      if (action.type.indexOf('WORKOUT') != -1) {
+        const [ key, group ] = groups.findEntry(g => g.id == action.groupId)
+        return groups.set(key, workoutReducer(group, action))
+      }
       // else if (action.type.indexOf('EXERCISE')) {
       //   const locator = [action.group, 'workouts', action.workout, 'exercises'];
       //   let exercises = groups.getIn(locator, [])
@@ -41,13 +41,22 @@ const groups = (groups, action) => {
   }
 }
 
-function workoutReducer(workouts, action) {
+/**
+ *
+ * @param {Group} group
+ * @param action
+ * @returns {*}
+ */
+function workoutReducer(group, action) {
   switch (action.type) {
     case ACTIONS.ADD_WORKOUT:
+      return group.pushWorkout()
+
     case ACTIONS.REMOVE_WORKOUT:
       throw new Error('Not implemented')
+
     default:
-      return workouts
+      return group
   }
 }
 

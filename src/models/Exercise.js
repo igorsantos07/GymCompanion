@@ -1,36 +1,34 @@
-export default class Exercise {
+import { Record } from 'immutable'
 
-  static lastId = 0
+/**
+ * @property {number} id
+ * @property {string} name
+ * @property {number} sets
+ * @property {number} reps
+ * @property {number} interval
+ * @property {number|string} weight
+ * @property {string} note
+ * @property {boolean} active
+ */
+export default class Exercise extends Record({
+  id: 0,
+  name: '',
+  sets: 3,
+  reps: 12,
+  interval: 60,
+  weight: '',
+  note: '',
+  active: true
+}) {
 
-  /** @type number */
-  id
-
-  /** @type string */
-  name
-
-  /** @type number */
-  sets
-
-  /** @type number */
-  reps
-
-  /** @type number */
-  interval
-
-  /** @type number|string */
-  weight
-
-  /** @type string */
-  note
-
-
-  constructor(name, sets, reps, interval, weight = null, note = '') {
-    this.id       = ++Exercise.lastId
-    this.name     = name
-    this.sets     = sets
-    this.reps     = reps
-    this.interval = interval
-    this.weight   = weight
-    this.note     = note
+  constructor(id, data = {}) {
+    data.id   = id
+    data.name = data.name || `Exercise #${data.id}`
+    super(data)
   }
+
+  withStatus(bool) {
+    return new Exercise(this.id, Object.assign({}, this.toJS(), { active: bool }))
+  }
+
 }
